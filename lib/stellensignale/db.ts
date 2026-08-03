@@ -122,7 +122,11 @@ export async function getFirmenOhneEmail(limit?: number): Promise<Zielfirma[]> {
     .is("email", null)
     .not("website", "is", null)
     .neq("status", "gesperrt")
-    .order("created_at", { ascending: true });
+    // Nach updated_at, NICHT nach created_at: sonst bearbeitet jeder Lauf
+    // dieselben aeltesten Firmen — genau die, die schon gescheitert sind — und
+    // erreicht die neu hinzugekommenen nie. Nach einem erfolglosen Versuch
+    // wird updated_at angefasst, dadurch rotiert die Warteschlange von selbst.
+    .order("updated_at", { ascending: true });
   if (limit) q = q.limit(limit);
   const { data, error } = await q;
   if (error) throw error;

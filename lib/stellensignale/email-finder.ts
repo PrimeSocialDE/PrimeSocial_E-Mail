@@ -98,7 +98,7 @@ export interface EnrichmentResult {
 // speichern. Liefert pro Firma ein Diagnose-Ergebnis zurück.
 export async function runEmailEnrichment(opts?: { limit?: number }): Promise<EnrichmentResult> {
   const result: EnrichmentResult = { kandidaten: 0, geprueft: 0, gefunden: 0, perPattern: 0, proben: [], fehler: [] };
-  const limit = opts?.limit ?? parseInt(process.env.STELLENSIGNALE_EMAIL_LIMIT ?? "25", 10);
+  const limit = opts?.limit ?? parseInt(process.env.STELLENSIGNALE_EMAIL_LIMIT ?? "120", 10);
 
   const alle = await getFirmenOhneEmail(); // alle Kandidaten (mit Website, ohne Mail)
   result.kandidaten = alle.length;
@@ -113,7 +113,15 @@ export async function runEmailEnrichment(opts?: { limit?: number }): Promise<Enr
         website: firma.website,
         ergebnis: fund ? `${fund.email} (${fund.quelle}, ${fund.confidence}%)` : "keine Mail gefunden",
       });
-      if (!fund) continue;
+      if (!fund) {
+        // Erfolglosen Versuch markieren, indem updated_at angefasst wird.
+        // Ohne das rutscht die Firma beim naechsten Lauf wieder an den Anfang
+        // der Warteschlange und blockiert dauerhaft einen Platz — genau so
+        // wurden zehn Runden lang immer dieselben 25 Firmen geprueft, waehrend
+        // 646 neue mit Website nie an die Reihe kamen.
+        await updateZielfirma(firma.id, { updated_at: new Date().toISOString() });
+        continue;
+      }
       await updateZielfirma(firma.id, {
         email: fund.email,
         gf_name: firma.gf_name ?? fund.gf_name,
