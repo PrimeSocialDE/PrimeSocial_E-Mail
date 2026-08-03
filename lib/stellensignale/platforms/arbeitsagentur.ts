@@ -43,6 +43,18 @@ interface BaAntwort {
   stellenangebote?: BaStelle[];
 }
 
+/**
+ * Letzter Fehler der Schnittstelle. Wird vom Aufrufer ausgewertet, damit ein
+ * AUSFALL nicht wie ein leeres Ergebnis aussieht.
+ *
+ * Genau das ist passiert: Die API antwortete ploetzlich mit 404, der Adapter
+ * gab brav [] zurueck, und der Discovery-Lauf meldete "20 Abfragen, 0 Anzeigen"
+ * — als waere das ein normales Ergebnis. Ein Ausfall der Hauptquelle darf nicht
+ * wie "in dieser Region sucht gerade niemand" aussehen.
+ */
+let letzterFehler: string | null = null;
+export function baLetzterFehler(): string | null { return letzterFehler; }
+
 async function frage(params: Record<string, string>): Promise<BaAntwort | null> {
   const url = `${BASIS}?${new URLSearchParams(params).toString()}`;
   try {
@@ -53,9 +65,16 @@ async function frage(params: Record<string, string>): Promise<BaAntwort | null> 
       headers: { "X-API-Key": API_KEY, Accept: "application/json" },
     });
     clearTimeout(timer);
-    if (!res.ok) return null;
+    if (!res.ok) {
+      letzterFehler = res.status === 404
+        ? "HTTP 404 — Endpunkt antwortet nicht (haeufig eine temporaere Sperre nach vielen Abfragen)"
+        : `HTTP ${res.status}`;
+      return null;
+    }
+    letzterFehler = null;
     return (await res.json()) as BaAntwort;
-  } catch {
+  } catch (e) {
+    letzterFehler = e instanceof Error ? e.message : String(e);
     return null;
   }
 }

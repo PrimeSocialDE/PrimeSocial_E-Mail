@@ -13,6 +13,7 @@ import {
   getVersandbereiteEntwuerfe,
   getHeuteGesendet,
   getSuppressionSet,
+  getBereitsAngeschrieben,
   markEntwurfGesendet,
   markEntwurfFehler,
   terminiereNaechstenSchritt,
@@ -118,6 +119,12 @@ export async function sendeFreigegebene(opts?: { jetzt?: Date; ignoriereFenster?
 
   const kandidaten = await getVersandbereiteEntwuerfe(proLauf * 2); // Puffer für Suppression-Treffer
   const gesperrt = await getSuppressionSet();
+  // Adressen, die schon einmal bedient wurden — schuetzt vor Doppelansprache,
+  // wenn dieselbe Firma versehentlich zweimal in der Datenbank steht.
+  const schonAngeschrieben = await getBereitsAngeschrieben();
+  // Innerhalb DIESES Laufs ebenfalls mitzaehlen: zwei faellige Entwuerfe mit
+  // derselben Adresse wuerden sonst beide rausgehen.
+  const indiesemLauf = new Set<string>();
 
   let gesendet = 0;
   const proSchritt: Record<number, number> = {};
@@ -135,6 +142,14 @@ export async function sendeFreigegebene(opts?: { jetzt?: Date; ignoriereFenster?
       continue;
     }
 
+    // Doppelansprache verhindern — aber NUR bei Erstansprachen. Schritt 2 und 3
+    // gehen bewusst an dieselbe Adresse, das ist ja der Sinn der Sequenz.
+    if (e.schritt === 1 && (schonAngeschrieben.has(email) || indiesemLauf.has(email))) {
+      await markEntwurfFehler(e.id, "Adresse wurde bereits angeschrieben (Doppeleintrag?)", e.versuche ?? 0);
+      uebersprungen++;
+      continue;
+    }
+
     try {
       const { messageId } = await sendSesMail({
         to: email,
@@ -143,6 +158,7 @@ export async function sendeFreigegebene(opts?: { jetzt?: Date; ignoriereFenster?
       });
       await markEntwurfGesendet(e.id, { gesendet_an: email, ses_message_id: messageId });
       gesendet++;
+      indiesemLauf.add(email);
       proSchritt[e.schritt] = (proSchritt[e.schritt] ?? 0) + 1;
 
       // Erst jetzt den Folgeschritt terminieren — ab dem TATSAECHLICHEN Versand.

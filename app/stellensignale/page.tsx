@@ -1,4 +1,6 @@
 import { getFirmaOutreach, getEntwuerfe } from "@/lib/stellensignale/db";
+import { SammelnButtons } from "@/components/stellensignale/SammelnButtons";
+import regionenData from "@/data/stellensignale-regionen.json";
 import type { FirmaOutreach } from "@/types/stellensignale";
 
 // Übersicht: EINE Zeile pro Firma (heißeste Stelle). Read-only, zum schnellen
@@ -57,6 +59,10 @@ export default async function StellensignaleUebersicht() {
           Migration ausstehend? ({ladeFehler})
         </div>
       )}
+
+      <div className="mb-6">
+        <SammelnButtons zentren={(regionenData as { zentren?: unknown[] }).zentren?.length ?? 0} />
+      </div>
 
       <div className="grid grid-cols-4 gap-3 mb-6 max-w-2xl">
         <Stat label="Firmen" value={firmen.length} />

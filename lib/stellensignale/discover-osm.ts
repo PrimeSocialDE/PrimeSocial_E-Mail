@@ -27,7 +27,16 @@ export interface OsmResult {
 function dedupKey(f: { website?: string | null; firma: string; ort?: string | null }): string {
   const dom = domainOf(f.website);
   if (dom) return `dom:${dom}`;
-  return `no:${f.firma.trim().toLowerCase()}|${(f.ort ?? "").trim().toLowerCase()}`;
+  // Namen normalisieren, sonst gelten "Siemens" und "Siemens GmbH" als
+  // verschiedene Firmen. An echten Daten standen neun Firmen doppelt drin.
+  // Ort NICHT mehr im Schluessel: dieselbe Firma taucht je nach Anzeige mal
+  // mit Sitz, mal mit Einsatzort auf — und wurde dadurch doppelt angelegt.
+  const name = f.firma
+    .toLowerCase()
+    .replace(/\b(gmbh|mbh|co|kg|ohg|ag|se|e\.?\s?k\.?|gbr|und|&|inh\.?|niederlassung|filiale)\b/g, " ")
+    .replace(/[^a-z\u00e4\u00f6\u00fc\u00df0-9]+/g, " ")
+    .trim();
+  return `no:${name}`;
 }
 
 /**

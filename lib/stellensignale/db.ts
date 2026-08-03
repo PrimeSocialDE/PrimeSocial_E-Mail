@@ -444,6 +444,30 @@ export async function terminiereNaechstenSchritt(
   if (error) throw error;
 }
 
+/**
+ * Alle Adressen, an die schon einmal etwas rausging.
+ *
+ * Zweite Verteidigungslinie gegen Doppelansprache: Der Dedup beim Anlegen
+ * arbeitet ueber Firmenname und Domain und kann eine Firma trotzdem doppelt
+ * erfassen — an echten Daten stehen neun Firmen zweimal drin. Zwei Zeilen mit
+ * derselben Adresse ergaeben zwei Sequenzen an denselben Betrieb. Deshalb wird
+ * VOR jedem Versand geprueft, ob diese ADRESSE schon bedient wurde, unabhaengig
+ * davon, zu welcher Firmenzeile sie gehoert.
+ */
+export async function getBereitsAngeschrieben(): Promise<Set<string>> {
+  if (!configured()) return new Set();
+  const { data, error } = await db()
+    .from("stellen_entwuerfe")
+    .select("gesendet_an")
+    .not("gesendet_an", "is", null);
+  if (error) throw error;
+  return new Set(
+    ((data ?? []) as { gesendet_an: string | null }[])
+      .map((r) => (r.gesendet_an ?? "").toLowerCase().trim())
+      .filter(Boolean),
+  );
+}
+
 export async function markEntwurfGesendet(
   id: string,
   input: { gesendet_an: string; ses_message_id: string },

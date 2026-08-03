@@ -13,7 +13,7 @@ import { getZielfirmen, getBlacklist, createZielfirma, upsertSignal, updateZielf
 import { pruefeAnzeige, domainOf, istAusgeschlossen } from "@/lib/stellensignale/filter";
 import { istFachkraft } from "@/lib/stellensignale/qualify";
 import { discoverKleinanzeigen } from "@/lib/stellensignale/platforms/kleinanzeigen";
-import { discoverArbeitsagentur } from "@/lib/stellensignale/platforms/arbeitsagentur";
+import { discoverArbeitsagentur, arbeitsagenturAktiv, baLetzterFehler } from "@/lib/stellensignale/platforms/arbeitsagentur";
 import { discoverIndeed } from "@/lib/stellensignale/platforms/indeed";
 import type { DiscoveryTreffer, DiscoveryZiel, ZielfirmaStatus } from "@/types/stellensignale";
 
@@ -32,7 +32,16 @@ export interface DiscoveryResult {
 function dedupKey(f: { website?: string | null; firma: string; ort?: string | null }): string {
   const dom = domainOf(f.website);
   if (dom) return `dom:${dom}`;
-  return `no:${f.firma.trim().toLowerCase()}|${(f.ort ?? "").trim().toLowerCase()}`;
+  // Namen normalisieren, sonst gelten "Siemens" und "Siemens GmbH" als
+  // verschiedene Firmen. An echten Daten standen neun Firmen doppelt drin.
+  // Ort NICHT mehr im Schluessel: dieselbe Firma taucht je nach Anzeige mal
+  // mit Sitz, mal mit Einsatzort auf — und wurde dadurch doppelt angelegt.
+  const name = f.firma
+    .toLowerCase()
+    .replace(/\b(gmbh|mbh|co|kg|ohg|ag|se|e\.?\s?k\.?|gbr|und|&|inh\.?|niederlassung|filiale)\b/g, " ")
+    .replace(/[^a-z\u00e4\u00f6\u00fc\u00df0-9]+/g, " ")
+    .trim();
+  return `no:${name}`;
 }
 
 // Alle aktivierten Plattformen für ein (Ort, Gewerk) abfragen.
@@ -209,6 +218,14 @@ export async function runDiscovery(opts: {
         }
       }
     }
+  }
+
+  // Ausfall der Hauptquelle sichtbar machen. Ohne diesen Hinweis sieht ein
+  // Totalausfall der Arbeitsagentur-API exakt aus wie "es gibt gerade keine
+  // offenen Stellen" — und niemand merkt tagelang, dass nichts mehr reinkommt.
+  const baFehler = baLetzterFehler();
+  if (arbeitsagenturAktiv() && result.trefferGesamt === 0 && baFehler) {
+    result.fehler.push(`Arbeitsagentur-API nicht erreichbar: ${baFehler}`);
   }
 
   return result;
