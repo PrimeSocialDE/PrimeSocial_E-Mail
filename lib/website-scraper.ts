@@ -67,7 +67,29 @@ function extractEmails(html: string): string[] {
     .replace(/\s+at\s+/gi, "@")
     .replace(/&#64;/g, "@")
     .replace(/&amp;/g, "&");
-  return [...(decoded.match(EMAIL_RE) ?? [])];
+  const roh = [...(decoded.match(EMAIL_RE) ?? [])];
+
+  // Nachbearbeitung. Ohne sie entstehen aus HTML- und JS-Artefakten Adressen,
+  // die es nie gab — an echten Seiten aufgetreten:
+  //   "mailtoinfo@firma.de"      (mailto: ohne Doppelpunkt im Markup)
+  //   "u002f@dachdeckerei.baden" (\u002f-Escape aus einem Skript)
+  //   "benutzer@domain.com"      (Platzhalter einer Website-Vorlage)
+  // Jede davon waere ein garantierter Bounce auf der Versanddomain.
+  return roh
+    .map((e) => e.toLowerCase().trim().replace(/^(mailto:?|e-?mail:?|kontakt:?)/i, ""))
+    .filter((e) => {
+      if (!/^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+$/i.test(e)) return false;
+      // Unicode-Escapes und typische Skript-Artefakte im lokalen Teil.
+      if (/^(u[0-9a-f]{4}|x[0-9a-f]{2}|[0-9a-f]{8,})$/i.test(e.split("@")[0])) return false;
+      // Platzhalter-Domains aus Vorlagen.
+      if (/@(domain|example|beispiel|muster|test|localhost|ihre?-?domain)\./i.test(e)) return false;
+      // Dateinamen, die wie Adressen aussehen.
+      if (/\.(png|jpe?g|gif|webp|svg|css|js)$/i.test(e)) return false;
+      // Endung muss eine plausible TLD sein.
+      const tld = e.split(".").pop() ?? "";
+      if (tld.length < 2 || tld.length > 12 || /\d/.test(tld)) return false;
+      return true;
+    });
 }
 
 // GF/Inhaber aus Impressum-Text extrahieren

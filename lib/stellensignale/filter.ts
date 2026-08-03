@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────
 import { STOERER_KEYWORDS } from "@/lib/stellensignale/constants";
 import ausschlussData from "@/data/stellensignale-ausschluss.json";
+import kundenData from "@/data/stellensignale-eigene-kunden.json";
 import type { RohAnzeige, FilterErgebnis } from "@/types/stellensignale";
 
 // ── Konzern-/Ausschluss-Filter ────────────────────────────────────
@@ -33,11 +34,46 @@ function escapeRegex(s: string): string {
 const PERSONALDIENSTLEISTER_MUSTER: RegExp =
   /(personal|perso\s|persona|zeitarbeit|zeitkraft|arbeitnehmer|überlassung|ueberlassung|staffing|recruit|randstad|adecco|manpower|tempton|piening|jobtimum|timecon|orizon|argo\s|expertum|avitea|actief|hito|unique\s|dis\s?ag|gulp|brunel|ferchau|sthree|hays|plusswerk|plankontor|arbeitsvermittl)/i;
 
+/**
+ * EIGENE KUNDEN, REFERENZEN UND PARTNER.
+ *
+ * Einen bestehenden Kunden mit einer Kaltakquise-Mail anzuschreiben ist der
+ * peinlichste Fehler, den dieses System machen kann — und er faellt erst auf,
+ * wenn der Kunde anruft. Deshalb ein eigener, sichtbarer Check und keine
+ * Vermischung mit der Konzern-Ausschlussliste.
+ */
+const EIGENE_KUNDEN: string[] = (kundenData as { namen?: string[] }).namen ?? [];
+
+/** Namen fuer den Vergleich vereinheitlichen (Rechtsform und Zeichen raus). */
+function normName(s: string): string {
+  return s.toLowerCase()
+    .replace(/\b(gmbh|mbh|co|kg|ohg|ag|se|e\.?\s?k\.?|gbr|und|&)\b/g, " ")
+    .replace(/[^a-zäöüß0-9]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Ist das ein eigener Kunde/eine Referenz? Dann niemals anschreiben. */
+export function istEigenerKunde(firma: string | null | undefined): string | null {
+  if (!firma) return null;
+  const n = normName(firma);
+  if (!n) return null;
+  for (const k of EIGENE_KUNDEN) {
+    const kn = normName(k);
+    if (kn && n.includes(kn)) return k;
+  }
+  return null;
+}
+
 // Gibt den Ausschlussgrund zurück, oder null wenn die Firma passt.
 export function istAusgeschlossen(firma: string | null | undefined): string | null {
   if (!firma) return null;
   const name = firma.trim();
   if (!name) return null;
+
+  // Eigene Kunden zuerst — der Fehler mit den teuersten Folgen.
+  const kunde = istEigenerKunde(name);
+  if (kunde) return `Eigener Kunde/Referenz: ${kunde}`;
 
   const pdl = name.match(PERSONALDIENSTLEISTER_MUSTER);
   if (pdl) return `Personaldienstleister-Muster "${pdl[0]}"`;

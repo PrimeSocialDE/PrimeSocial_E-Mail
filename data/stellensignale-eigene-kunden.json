@@ -1,0 +1,16 @@
+{
+  "_hinweis": "EIGENE KUNDEN, REFERENZEN UND PARTNER — diese Betriebe werden NIEMALS angeschrieben. Der Abgleich läuft als Teilstring über den normalisierten Firmennamen, 'VAM' trifft also auch 'VAM GmbH & Co. KG'. Bei jedem neuen Kunden hier ergänzen, bevor der nächste Sammel-Lauf startet. Kurze Einträge wie 'vam' können auch fälschlich greifen — im Zweifel den vollen Namen eintragen.",
+  "namen": [
+    "VAM",
+    "Elektro Mußwessels",
+    "Elektro Musswessels",
+    "Mußwessels",
+    "Musswessels",
+    "HVV Immobilien",
+    "Hildebrand Immobilien",
+    "Kreisbahn Aurich",
+    "Stadtwerke Wilhelmshaven",
+    "Soldatenwissen",
+    "PrimeSocial"
+  ]
+}

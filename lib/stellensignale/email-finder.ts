@@ -14,6 +14,7 @@ import { scrapeWebsiteForContact } from "@/lib/website-scraper";
 import { inferGfEmail, parseName } from "@/lib/stellensignale/email-pattern";
 import { domainOf } from "@/lib/stellensignale/filter";
 import { getFirmenOhneEmail, updateZielfirma } from "@/lib/stellensignale/db";
+import { ordneEin } from "@/lib/stellensignale/branche";
 import type { Zielfirma, EmailFund } from "@/types/stellensignale";
 
 const GENERIC_PREFIX = /^(info|hallo|kontakt|contact|service|office|team|post|mail|email|anfrage|karriere|jobs?|bewerbung)\b/;
@@ -101,8 +102,20 @@ export async function runEmailEnrichment(opts?: { limit?: number }): Promise<Enr
   const limit = opts?.limit ?? parseInt(process.env.STELLENSIGNALE_EMAIL_LIMIT ?? "120", 10);
 
   const alle = await getFirmenOhneEmail(); // alle Kandidaten (mit Website, ohne Mail)
-  result.kandidaten = alle.length;
-  const batch = alle.slice(0, limit);
+
+  // VORFILTER: nicht jede Firma durch den teuren Impressum-Scraper schicken.
+  // OSM liefert alles, was in einer Region existiert — auch Fotostudios und
+  // Galerien. Ungefiltert lag die Trefferquote bei 4 %, weil der Scraper seine
+  // Zeit bei Betrieben verbrachte, die ohnehin nie angeschrieben werden.
+  // Reihenfolge: klare Ziele zuerst, "vielleicht" nur mit Restkapazitaet,
+  // "raus" gar nicht.
+  const bewertet = alle
+    .map((f) => ({ f, u: ordneEin(f.firma, f.gewerk) }))
+    .filter((x) => x.u.relevanz !== "raus")
+    .sort((a, b) => (a.u.relevanz === "ziel" ? 0 : 1) - (b.u.relevanz === "ziel" ? 0 : 1));
+
+  result.kandidaten = bewertet.length;
+  const batch = bewertet.slice(0, limit).map((x) => x.f);
 
   for (const firma of batch) {
     result.geprueft++;
