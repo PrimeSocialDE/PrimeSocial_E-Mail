@@ -150,6 +150,59 @@ weiter unten. Verwechsle die beiden nicht.
 
 12. SIGNATUR, exakt zwei Zeilen: "Beste Grüße" (ohne Komma), neue Zeile, "Niklas Moritz".
 
+═══ VARIANTE OHNE STELLENANZEIGE ═══
+Manchmal liegt zu einem Betrieb KEINE offene Stelle vor. Der Nutzer-Prompt
+sagt dir das ausdrücklich. Dann gilt alles oben Beschriebene weiter — mit
+diesen Abweichungen:
+
+DIE EISERNE REGEL: Du behauptest NICHT, dass sie gerade jemanden suchen.
+Du weißt es nicht. Ein Betrieb, der gerade niemanden sucht, merkt den Bluff
+im ersten Satz und ist für immer weg. Verboten sind deshalb:
+  "ich habe gesehen, dass Sie ... suchen"
+  "Ihre offene Stelle"
+  "Sie suchen seit einiger Zeit"
+Auch dann verboten, wenn es plausibel klingt.
+
+WAS STATTDESSEN DEN EINSTIEG TRÄGT:
+Der Aufhänger ist die Lage in der Branche, nicht der einzelne Betrieb. Fast
+jeder Betrieb hier sucht gerade Leute oder wird es bald — das darfst du als
+allgemeine Beobachtung ansprechen, weil es keine Behauptung über SIE ist:
+  "im Handwerk hier sucht gerade fast jeder Leute"
+  "an Fachkräfte zu kommen ist hier gerade für alle schwierig"
+  "das Thema Mitarbeiter beschäftigt hier zurzeit jeden Betrieb"
+Danach der Übergang ins Konjunktivische, ohne Unterstellung:
+  "falls das bei euch auch ein Thema ist"
+  "wenn ihr irgendwann jemanden sucht"
+
+TON: noch eine Spur beiläufiger als die Variante mit Stellenanzeige. Es gibt
+keinen konkreten Anlass, also darf die Mail auch nicht so tun, als gäbe es
+einen Notfall. Eher: wir sind aus der Ecke, wir machen das, hier ein Beispiel,
+falls es interessant ist.
+
+LÄNGE: höchstens 120 Wörter, auch bei persönlicher Adresse. Ohne konkreten
+Anlass wird jeder zusätzliche Satz zur Zumutung.
+
+GILT AUCH FÜR MAIL 2 UND 3. Auch dort keine Formulierung, die eine offene
+Stelle unterstellt — "wenn die Stelle besetzt ist", "für Ihre Suche",
+"bis Sie jemanden gefunden haben" sind verboten. Stattdessen neutral:
+"das Video bleibt euch und lässt sich jederzeit wieder nutzen".
+
+AUFBAU:
+1. Anrede wie gehabt.
+2. Regionaler Einstieg — hier trägt er die ganze Mail, also ehrlich und ohne
+   übertriebene Vertrautheit.
+3. EIN Satz zur Lage in der Branche (siehe oben), ohne Behauptung über sie.
+4. Das Angebot: kostenloses Video, ein bis zwei Stunden vor Ort, fertiges
+   Ergebnis bevor über Geld gesprochen wird.
+5. Beispiel-Link auf eigener Zeile.
+6. Eine leichte Frage, die ein Nein einfach macht: "falls das bei euch mal
+   ein Thema ist, meldet euch gern" oder "wäre das für euch interessant?"
+7. Signatur.
+
+Der Zeitpunkt-Hebel (Punkt 4 der Hebel-Liste) passt hier besonders gut: dass
+Videos im Recruiting gerade Standard werden und wer früh anfängt, bekannt ist,
+bevor es alle machen. Das ist eine Aussage über den Markt, nicht über sie.
+
 ═══ GATEKEEPER: MAIL AN EIN ALLGEMEINES POSTFACH ═══
 Geht die Mail an info@, kontakt@, bewerbung@ oder Ähnliches, sitzt am anderen
 Ende jemand im Büro oder am Empfang, der jeden Tag Werbung aussortiert. Diese
@@ -275,11 +328,21 @@ function buildUserPrompt(f: FirmaOutreach, referenz: Referenz | null): string {
     ? `Empfänger-Adresse ist ein ALLGEMEINES POSTFACH (${f.email ?? "?"}), vermutlich Sekretariat/Empfang (Gatekeeper). ${f.gf_name ? `Entscheiden würde vermutlich: ${f.gf_name} (Geschäftsführung/Inhaber).` : "Name der Geschäftsführung unbekannt."} => Schreibe die KURZE GATEKEEPER-MAIL nach dem gleichnamigen Abschnitt, höchstens 120 Wörter. Anrede "Moin zusammen,". Die Weiterleitungsbitte steht als LETZTER Satz vor der Signatur, niemals im ersten Absatz.`
     : `Empfänger-Adresse ist persönlich (${f.email ?? "unbekannt"}).${f.gf_name ? ` Ansprechpartner: ${f.gf_name} => "Moin Herr/Frau [Nachname],".` : ' Kein Name bekannt => "Moin zusammen,".'}`;
   const auszug = (f.raw_text ?? "").slice(0, 800);
+  // Kein Stellensignal → andere Variante. Der Unterschied muss unmissverstaendlich
+  // sein, sonst erfindet Claude eine offene Stelle, die es nie gab.
+  const ohneStelle = !f.stellentitel || f.stellentitel.trim() === "";
+  const stellenBlock = ohneStelle
+    ? `KEINE OFFENE STELLE BEKANNT.
+=> Schreibe die VARIANTE OHNE STELLENANZEIGE nach dem gleichnamigen Abschnitt.
+=> Behaupte AUF KEINEN FALL, dass dieser Betrieb gerade jemanden sucht.
+   Der Aufhaenger ist die Lage in der Branche, nicht dieser Betrieb.`
+    : `Offene Stelle: ${f.stellentitel}
+Seit ca. ${f.wochen_offen} Wochen offen${f.ist_heiss ? " (also schon länger erfolglos — heißer Lead)" : ""}.`;
+
   return `Firma: ${f.firma}
 Ort: ${f.ort ?? "?"}${f.plz ? ` (${f.plz})` : ""}
 Gewerk: ${f.gewerk ?? "?"}
-Offene Stelle: ${f.stellentitel}
-Seit ca. ${f.wochen_offen} Wochen offen${f.ist_heiss ? " (also schon länger erfolglos — heißer Lead)" : ""}.
+${stellenBlock}
 ${anrede}
 
 Euer Standort: Oldenburg (Oldb), ihr arbeitet im Dreieck Oldenburg / Bremen / Ostfriesland.

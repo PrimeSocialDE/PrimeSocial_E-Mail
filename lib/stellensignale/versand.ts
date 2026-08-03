@@ -50,8 +50,13 @@ export function tagesbudget(jetzt = new Date()): { budget: number; stufe: string
   const tage = Math.floor((jetzt.getTime() - startMs) / 86_400_000);
   if (tage < 0) return { budget: 0, stufe: "Warmup startet erst später" };
 
+  // Startmenge einstellbar. 5 ist der vorsichtige Standard; 10 ist vertretbar,
+  // wenn SPF, DKIM und DMARC sauber sind und die Bounce-Verarbeitung laeuft —
+  // beides hier der Fall. Hoeher waere Leichtsinn: die Bounce-Quote der
+  // gescrapten Adressen kennt niemand, bevor die ersten Mails raus sind.
+  const startMenge = Math.min(20, Math.max(1, parseInt(process.env.SES_WARMUP_START_MENGE ?? "5", 10)));
   const woche = Math.floor(tage / 7);
-  const rampe = 5 * Math.pow(2, woche); // 5, 10, 20, 40, 80 ...
+  const rampe = startMenge * Math.pow(2, woche);
   const budget = Math.min(rampe, max);
   return { budget, stufe: `Warmup-Woche ${woche + 1}: ${rampe}/Tag, Deckel ${max}` };
 }

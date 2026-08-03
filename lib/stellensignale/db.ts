@@ -573,6 +573,49 @@ export async function getHeuteFaellig(): Promise<Record<number, number>> {
   return out;
 }
 
+/**
+ * Firmen MIT Adresse, aber OHNE Stellensignal.
+ *
+ * Fuer die Variante ohne Stellenanzeige. Loest den Engpass: Es gibt 240
+ * Betriebe mit Adresse, aber nur 29 Fachkraft-Signale — ohne diesen Weg
+ * bliebe die grosse Mehrheit unerreichbar, solange die Arbeitsagentur nicht
+ * antwortet.
+ *
+ * Nur Betriebe, die branchlich klar passen ("ziel"). Bei den unklaren waere
+ * eine Mail ohne konkreten Anlass zu wenig zielgenau.
+ */
+export async function getFirmenOhneSignal(limit: number): Promise<FirmaOutreach[]> {
+  if (!configured()) return [];
+
+  const { data: mitSignal } = await db().from("stellen_signale").select("zielfirma_id");
+  const hatSignal = new Set(((mitSignal ?? []) as { zielfirma_id: string }[]).map((r) => r.zielfirma_id));
+
+  const { data: vorhandene } = await db().from("stellen_entwuerfe").select("zielfirma_id");
+  const hatEntwurf = new Set(((vorhandene ?? []) as { zielfirma_id: string }[]).map((r) => r.zielfirma_id));
+
+  const { data, error } = await db()
+    .from("zielfirmen").select("*").eq("status", "aktiv").not("email", "is", null);
+  if (error) throw error;
+
+  const { ordneEin } = await import("@/lib/stellensignale/branche");
+  const kandidaten = ((data ?? []) as Zielfirma[])
+    .filter((f) => !hatSignal.has(f.id) && !hatEntwurf.has(f.id))
+    .filter((f) => ordneEin(f.firma, f.gewerk).relevanz === "ziel")
+    // Als FirmaOutreach abbilden — ohne Stelle, das signalisiert dem Prompt
+    // die andere Variante.
+    .map((f): FirmaOutreach => ({
+      zielfirma_id: f.id, firma: f.firma, gewerk: f.gewerk, ort: f.ort, plz: f.plz,
+      website: f.website, email: f.email, email_quelle: f.email_quelle,
+      email_confidence: f.email_confidence, gf_name: f.gf_name, firma_status: f.status,
+      signal_id: "", stellentitel: "", quelle: "karriereseite", quelle_url: null,
+      raw_text: null, erstfund: f.created_at.slice(0, 10), letzter_fund: f.created_at.slice(0, 10),
+      ist_fachkraft: false, wochen_offen: 0, ist_heiss: false, anzahl_signale: 0,
+    }));
+
+  const min = mindestScore();
+  return sortiereNachChance(kandidaten.filter((f) => erreichbarkeit(f).score >= min)).slice(0, limit);
+}
+
 export interface SuppressionEintrag {
   email: string;
   grund: string;
