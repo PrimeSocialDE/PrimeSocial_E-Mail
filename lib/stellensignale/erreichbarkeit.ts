@@ -11,6 +11,7 @@
 // wie wahrscheinlich ist es, dass die Mail gelesen und weitergegeben wird.
 // Reine Funktion, keine DB, keine API — nur die Felder, die ohnehin vorliegen.
 // ─────────────────────────────────────────────────────────────────
+import { istPlatzhalterMail, mailPasstNichtZurWebsite } from "@/lib/stellensignale/filter";
 import type { FirmaOutreach } from "@/types/stellensignale";
 
 export interface ErreichbarkeitErgebnis {
@@ -28,6 +29,14 @@ const RECHTSFORM = /\b(gmbh|mbh|kg|ohg|ag|se|e\.?\s?k\.?|gbr)\b/i;
 export function erreichbarkeit(f: FirmaOutreach): ErreichbarkeitErgebnis {
   const gruende: string[] = [];
   let score = 0;
+
+  // ── 0. Ausschlusskriterien — kein Score, sondern ein hartes Nein ──
+  // Eine Platzhalter-Adresse bounct garantiert, und ein Bounce beschaedigt die
+  // Versanddomain. Eine Adresse, deren Domain nicht zur Firma passt, gehoert
+  // jemand anderem — die Mail ginge an den Falschen.
+  if (istPlatzhalterMail(f.email)) {
+    return { score: 0, gruende: [`Platzhalter-Adresse (${f.email}) — garantierter Bounce`] };
+  }
 
   // ── 1. Art der E-Mail-Adresse — das stärkste Einzelsignal ──
   const lokal = (f.email ?? "").split("@")[0] ?? "";
@@ -77,6 +86,19 @@ export function erreichbarkeit(f: FirmaOutreach): ErreichbarkeitErgebnis {
   } else {
     score -= 1;
     gruende.push("keine Rechtsform im Namen — häufig Ein-Mann-/Kleinbetrieb");
+  }
+
+  // ── 5b. Mail-Domain passt nicht zur Website ──
+  // Bewusst ein Abzug und KEIN Ausschluss. Meist steckt ein Scraper-Fehler
+  // dahinter (Agentur im Footer, fremder Partnerlink) — manchmal aber auch ein
+  // legitimer Zweitname: MOIN SOLAR firmiert als WilkenSolar, Website und
+  // Mail-Domain unterscheiden sich also voellig zu Recht. Ein harter Ausschluss
+  // wuerde solche Betriebe verlieren. Der Hinweis steht in den Gruenden und ist
+  // bei der Freigabe sichtbar — dort entscheidet ein Mensch.
+  const domainProblem = mailPasstNichtZurWebsite(f.email, f.website);
+  if (domainProblem) {
+    score -= 2;
+    gruende.push(`⚠ ${domainProblem} — vor Freigabe prüfen`);
   }
 
   // ── 6. E-Mail-Confidence ──

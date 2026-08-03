@@ -31,7 +31,7 @@ function escapeRegex(s: string): string {
  * nach demselben Schema, und eine Liste wäre nach drei Monaten veraltet.
  */
 const PERSONALDIENSTLEISTER_MUSTER: RegExp =
-  /(personal|zeitarbeit|zeitkraft|arbeitnehmer|überlassung|ueberlassung|staffing|recruit|randstad|adecco|manpower|tempton|piening|jobtimum|timecon|orizon|argo\s|expertum|avitea|actief|hito|unique\s|dis\s?ag|gulp|brunel|ferchau|sthree|hays)/i;
+  /(personal|perso\s|persona|zeitarbeit|zeitkraft|arbeitnehmer|überlassung|ueberlassung|staffing|recruit|randstad|adecco|manpower|tempton|piening|jobtimum|timecon|orizon|argo\s|expertum|avitea|actief|hito|unique\s|dis\s?ag|gulp|brunel|ferchau|sthree|hays|plusswerk|plankontor|arbeitsvermittl)/i;
 
 // Gibt den Ausschlussgrund zurück, oder null wenn die Firma passt.
 export function istAusgeschlossen(firma: string | null | undefined): string | null {
@@ -50,6 +50,81 @@ export function istAusgeschlossen(firma: string | null | undefined): string | nu
     if (low.includes(n.toLowerCase())) return `Ausschluss-Firma "${n}"`;
   }
   return null;
+}
+
+/**
+ * Personaldienstleister am WEBSITE-INHALT erkennen.
+ *
+ * Das verlaesslichste Merkmal ueberhaupt: Wer Arbeitnehmer ueberlaesst, MUSS
+ * die Erlaubnis nach § 1 AUeG ausweisen — meist im Impressum. Namensmuster
+ * lassen sich umgehen ("TECH-PLUS", "nEw siMple woRk"), diese Pflichtangabe
+ * nicht.
+ *
+ * Wird geprueft, sobald die Website ohnehin fuer die Impressum-Mailsuche
+ * abgerufen wird — kostet also keinen zusaetzlichen Abruf.
+ */
+const PDL_WEBSITE_MUSTER: { muster: RegExp; grund: string }[] = [
+  { muster: /arbeitnehmer[üue]berlassung/i,        grund: "Arbeitnehmerüberlassung (§ 1 AÜG)" },
+  { muster: /\bA[ÜU]G\b/,                          grund: "Verweis auf das AÜG" },
+  { muster: /zeitarbeit/i,                          grund: "Zeitarbeit" },
+  { muster: /personaldienstleist/i,                 grund: "Personaldienstleistung" },
+  { muster: /personalvermittl/i,                    grund: "Personalvermittlung" },
+  { muster: /personalberatung/i,                    grund: "Personalberatung" },
+  { muster: /wir vermitteln .{0,20}(personal|mitarbeiter|fachkr[äa]fte)/i, grund: "vermittelt Personal" },
+];
+
+/**
+ * Gibt den Ausschlussgrund zurueck, wenn der Seiteninhalt einen
+ * Personaldienstleister verraet — sonst null.
+ */
+export function istPdlWebsite(seitentext: string | null | undefined): string | null {
+  if (!seitentext) return null;
+  for (const { muster, grund } of PDL_WEBSITE_MUSTER) {
+    if (muster.test(seitentext)) return grund;
+  }
+  return null;
+}
+
+/**
+ * Unbrauchbare E-Mail-Adressen erkennen.
+ *
+ * Zwei Faelle, beide an echten Daten aufgetreten:
+ *   1. Platzhalter aus Website-Vorlagen ("benutzer@domain.com"). Eine Mail
+ *      dorthin ist ein garantierter Bounce — und Bounces sind das, was eine
+ *      frische Versanddomain am schnellsten beschaedigt.
+ *   2. Adressen, deren Domain nichts mit der Firma zu tun hat: Der Scraper
+ *      hat dann die Mail einer fremden Firma erwischt (Agentur im Footer,
+ *      Web-Baukasten, Partnerlink). Ein Anschreiben ginge an den Falschen.
+ */
+const PLATZHALTER_MAIL =
+  /^(benutzer|user|name|vorname|nachname|ihre?-?mail|deine?-?mail|beispiel|example|muster|test|demo|info)@(domain|example|beispiel|muster|test|mail|deine-?domain|ihre-?domain)\.(com|de|org|net)$/i;
+
+/** true, wenn die Adresse offensichtlich ein Platzhalter ist. */
+export function istPlatzhalterMail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const e = email.trim().toLowerCase();
+  if (PLATZHALTER_MAIL.test(e)) return true;
+  // Generische Beispiel-Domains, unabhaengig vom lokalen Teil.
+  return /@(example|beispiel|domain|muster|test|localhost)\.(com|de|org|net|invalid)$/i.test(e);
+}
+
+/**
+ * Prueft, ob E-Mail-Domain und Firmen-Website zusammenpassen.
+ * Gibt einen Grund zurueck, wenn sie es NICHT tun — sonst null.
+ * Ohne eine der beiden Angaben wird nichts beanstandet (kein Fehlalarm bei
+ * fehlender Information).
+ */
+export function mailPasstNichtZurWebsite(
+  email: string | null | undefined,
+  website: string | null | undefined,
+): string | null {
+  const mail = baseDomain(email);
+  const site = baseDomain(website);
+  if (!mail || !site) return null;
+  if (mail === site) return null;
+  // Freemail ist kein Widerspruch — viele Kleinbetriebe nutzen genau das.
+  if (/^(gmail|googlemail|web|gmx|t-online|freenet|outlook|hotmail|yahoo|aol|posteo|mailbox)\./i.test(mail)) return null;
+  return `Mail-Domain ${mail} passt nicht zur Website ${site}`;
 }
 
 // Domain aus URL oder E-Mail extrahieren, normalisiert (kein www, lowercase).

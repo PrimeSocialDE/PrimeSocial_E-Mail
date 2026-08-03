@@ -14,7 +14,7 @@ import type { FirmaOutreach } from "../types/stellensignale";
 function f(over: Partial<FirmaOutreach>): FirmaOutreach {
   return {
     zielfirma_id: "x", firma: "Beispiel", gewerk: "elektro", ort: "Oldenburg", plz: null,
-    website: "https://beispiel.de", email: "info@beispiel.de", email_quelle: "impressum",
+    website: null, email: "info@beispiel.de", email_quelle: "impressum",
     email_confidence: 90, gf_name: null, firma_status: "aktiv", signal_id: "s",
     stellentitel: "Elektroniker (m/w/d)", quelle: "arbeitsagentur", quelle_url: null,
     raw_text: null, erstfund: "2026-05-01", letzter_fund: "2026-07-28",

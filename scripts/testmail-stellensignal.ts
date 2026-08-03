@@ -173,6 +173,9 @@ async function run() {
       if (nr > 1 && /https?:\/\//.test(m.text)) console.log("   ⚠️  Video-Link in einer Folgemail — gehört nur in Mail 1");
       if (nr === 3 && /\?/.test(m.text)) console.log("   ⚠️  Frage in Mail 3 — der Abschluss soll nichts mehr verlangen");
       if (/letzte Chance|letztes Mal|Frist/i.test(m.text)) console.log("   ⚠️  Druckformulierung gefunden");
+      // Zu dick aufgetragene Vertrautheit — der haeufigste Weg, sich unsympathisch zu machen.
+      const anbiedernd = m.text.match(/kennt man hier|kennt hier jeder|sieht man ständig|quasi Nachbarn|direkt um die Ecke|jeder kennt/i);
+      if (anbiedernd) console.log(`   ⚠️  Zu vertraut: "${anbiedernd[0]}"`);
     }
     const entwurfAlt = entwurf.mail_1; // fuer die folgenden QA-Pruefungen
 

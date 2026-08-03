@@ -12,6 +12,16 @@ export interface WebsiteContact {
   companyName: string | null;
   address: string | null;
   websiteSummary: string | null;  // Kurzbeschreibung aus Meta-Tags / Homepage
+  personen: Person[];             // aus Team-/Über-uns-Seiten, beste zuerst
+}
+
+/** Eine auf der Website gefundene Person: Name, Funktion, ggf. eigene Adresse. */
+export interface Person {
+  name: string;
+  rolle: string | null;
+  email: string | null;
+  /** Je hoeher, desto besser als Empfaenger fuer eine Recruiting-Ansprache. */
+  rang: number;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -70,12 +80,100 @@ const GF_PATTERNS = [
   /vertreten durch[:\s]+([A-ZÄÖÜ][a-zäöüß]+ [A-ZÄÖÜ][a-zäöüß]+(?:\s[A-ZÄÖÜ][a-zäöüß]+)?)/i,
 ];
 
+/**
+ * Woerter, die niemals Teil eines Personennamens sind. Das Impressum-Muster
+ * greift oft ueber den Namen hinaus in die Navigation ("Georg Stapelfeld
+ * Kontakt") oder in die Rechtsform. Ungeprueft wuerde daraus in der Mail die
+ * Anrede "Moin Herr Kontakt" — schlimmer als gar kein Name.
+ */
+const KEIN_NAMENSTEIL =
+  /\b(kontakt|impressum|datenschutz|startseite|home|team|karriere|jobs?|leistungen|über|ueber|uns|gmbh|mbh|kg|ohg|ag|se|gbr|inhaber|geschäftsführer|geschaeftsfuehrer|vertreten|telefon|email|e-mail|adresse|anschrift|sitz|handelsregister|str|straße|strasse|weg|platz)\b/i;
+
+/**
+ * Erkannten Namen plausibilisieren. Lieber null als ein falscher Name:
+ * ohne Namen gruesst die Mail mit "Moin zusammen", das ist immer korrekt.
+ */
+function plausibelerName(roh: string): string | null {
+  let name = roh.trim().replace(/\s+/g, " ");
+
+  // Ueberhaengende Navigationswoerter hinten abschneiden.
+  const teile = name.split(" ");
+  while (teile.length > 2 && KEIN_NAMENSTEIL.test(teile[teile.length - 1])) teile.pop();
+  name = teile.join(" ");
+
+  if (teile.length < 2 || teile.length > 3) return null;   // Vor- + Nachname, evtl. Zweitname
+  if (name.length < 5 || name.length > 45) return null;
+  if (/\d/.test(name)) return null;                        // Ziffern gehoeren nicht in Namen
+  if (KEIN_NAMENSTEIL.test(name)) return null;             // Rest enthaelt noch ein Fremdwort
+  if (!/^[A-ZÄÖÜ]/.test(name)) return null;
+  return name;
+}
+
 function extractGfName(text: string): string | null {
   for (const re of GF_PATTERNS) {
     const m = text.match(re);
-    if (m?.[1]) return m[1].trim();
+    if (!m?.[1]) continue;
+    const geprueft = plausibelerName(m[1]);
+    if (geprueft) return geprueft;
   }
   return null;
+}
+
+/**
+ * Personen aus Team- und Über-uns-Seiten ziehen.
+ *
+ * Warum das lohnt: Eine persoenliche Adresse ist in der Erreichbarkeits-
+ * Bewertung drei Punkte wert, ein info@ nur einen. Und Teamseiten nennen die
+ * Funktion gleich mit — wer "Personalleitung" macht, ist fuer eine
+ * Recruiting-Mail der deutlich bessere Empfaenger als die Zentrale.
+ * Kostet nichts: die Seiten werden ohnehin abgerufen.
+ *
+ * Verfahren: Um jede gefundene E-Mail ein Textfenster legen und darin nach
+ * einem Personennamen und einer Funktionsbezeichnung suchen. Das ist robuster
+ * als HTML-Struktur zu parsen, die auf jeder Website anders aussieht.
+ */
+const ROLLEN: { muster: RegExp; label: string; rang: number }[] = [
+  { muster: /(personalleit|personalreferent|hr[- ]?manager|human resources|recruiting|personalabteilung)/i, label: "Personal", rang: 5 },
+  { muster: /(gesch[äa]ftsf[üu]hr|inhaber|geschäftsleitung|geschaeftsleitung)/i,                            label: "Geschäftsführung", rang: 4 },
+  { muster: /(prokurist|betriebsleit|niederlassungsleit|standortleit)/i,                                    label: "Leitung", rang: 3 },
+  { muster: /(b[üu]roleit|verwaltung|assistenz|sekretariat)/i,                                              label: "Verwaltung", rang: 2 },
+];
+
+const NAME_RE = /\b([A-ZÄÖÜ][a-zäöüß]{2,}(?:-[A-ZÄÖÜ][a-zäöüß]{2,})?)\s+([A-ZÄÖÜ][a-zäöüß]{2,}(?:-[A-ZÄÖÜ][a-zäöüß]{2,})?)\b/g;
+
+function extractPersonen(seitentext: string): Person[] {
+  const gefunden = new Map<string, Person>();
+
+  for (const m of seitentext.matchAll(EMAIL_RE)) {
+    const email = m[0].toLowerCase();
+    if (isGenericEmail(email)) continue;           // info@ gehoert keiner Person
+    const pos = m.index ?? 0;
+    const fenster = seitentext.slice(Math.max(0, pos - 250), pos + 150);
+
+    // Rolle im Umfeld?
+    let rolle: string | null = null;
+    let rang = 1;
+    for (const r of ROLLEN) {
+      if (r.muster.test(fenster)) { rolle = r.label; rang = r.rang; break; }
+    }
+
+    // Name im Umfeld — der letzte vor der Adresse ist meist der richtige.
+    const namen = [...fenster.matchAll(NAME_RE)]
+      .map((n) => `${n[1]} ${n[2]}`)
+      .filter((n) => !KEIN_NAMENSTEIL.test(n));
+    const name = namen.length > 0 ? namen[namen.length - 1] : null;
+    if (!name) continue;
+
+    // Zusatzpunkt, wenn der Nachname in der Adresse vorkommt — dann gehoeren
+    // Name und Mail nachweislich zusammen und sind nicht nur Nachbarn im Text.
+    const nachname = name.split(" ")[1].toLowerCase();
+    if (nachname.length > 3 && email.split("@")[0].includes(nachname.slice(0, 4))) rang += 2;
+
+    const vorhanden = gefunden.get(email);
+    if (!vorhanden || vorhanden.rang < rang) gefunden.set(email, { name, rolle, email, rang });
+  }
+
+  return [...gefunden.values()].sort((a, b) => b.rang - a.rang);
 }
 
 function extractPhone(text: string): string | null {
@@ -154,6 +252,7 @@ export async function scrapeWebsiteForContact(websiteUrl: string): Promise<Websi
   ];
 
   const allEmails: string[] = [];
+  let personenText = "";
   let gfName: string | null = null;
   let phone: string | null = null;
   let companyName: string | null = null;
@@ -178,6 +277,9 @@ export async function scrapeWebsiteForContact(websiteUrl: string): Promise<Websi
     // E-Mails sammeln
     const found = extractEmails(html);
     allEmails.push(...found);
+
+    // Team-/Über-uns-Seiten sammeln wir für die Personen-Extraktion.
+    if (/team|ueber-uns|about|kontakt/.test(slug)) personenText += " " + text;
 
     // Impressum-spezifische Extraktion
     if (slug.includes("impressum")) {
@@ -217,6 +319,16 @@ export async function scrapeWebsiteForContact(websiteUrl: string): Promise<Websi
     bestEmail = ranked.find((e) => !isGenericEmail(e)) ?? ranked[0] ?? null;
   }
 
+  const personen = extractPersonen(personenText);
+
+  // Beste Person schlaegt die generische Adresse: Eine Mail an
+  // personal@ oder an die namentlich genannte Personalleitung wird gelesen,
+  // eine an info@ landet im Sammelpostfach.
+  if (personen.length > 0 && personen[0].email) {
+    if (!bestEmail || isGenericEmail(bestEmail)) bestEmail = personen[0].email;
+    if (!gfName) gfName = personen[0].name;
+  }
+
   return {
     emails: ranked,
     bestEmail,
@@ -225,5 +337,6 @@ export async function scrapeWebsiteForContact(websiteUrl: string): Promise<Websi
     companyName,
     address: null,   // könnte man noch extrahieren
     websiteSummary,
+    personen,
   };
 }

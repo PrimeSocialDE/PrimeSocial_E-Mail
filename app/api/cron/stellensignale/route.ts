@@ -3,6 +3,7 @@ import zieleData from "@/data/stellensignale-targets.json";
 import { runDiscovery } from "@/lib/stellensignale/discover";
 import { runKarriereCrawl } from "@/lib/stellensignale/pipeline";
 import { runEmailEnrichment } from "@/lib/stellensignale/email-finder";
+import { runWebsiteEnrichment } from "@/lib/stellensignale/website-enrichment";
 import type { DiscoveryZiel } from "@/types/stellensignale";
 
 // Crawl-Cron für das STELLENSIGNAL-Modul (alle 3 Tage).
@@ -10,7 +11,10 @@ import type { DiscoveryZiel } from "@/types/stellensignale";
 // Ablauf:
 //   1. DISCOVERY: Arbeitsagentur-API nach Ort×Gewerk → neue Firmen + Signale
 //   2. KARRIERE-CRAWL: bekannte Firmen auf ihrer eigenen Karriereseite
-//   3. EMAIL-ENRICHMENT: Firmen ohne Mail → Impressum/Pattern (gratis)
+//   3. WEBSITE-ANREICHERUNG: Firmen ohne Website → Domain aus dem Namen
+//      ermitteln. Ohne diesen Schritt liefert die Arbeitsagentur zwar Namen,
+//      aber keine Adressen — und ohne Adresse entsteht kein Entwurf.
+//   4. EMAIL-ANREICHERUNG: Firmen ohne Mail → Impressum/Pattern (gratis)
 //
 // ZEITBUDGET — der Grund, warum das hier nicht einfach drei await hintereinander
 // sind: Seit Phase 1b machen alle drei Phasen echte HTTP-Abrufe. Ohne Deckel
@@ -66,8 +70,18 @@ export async function GET(req: NextRequest) {
       phasen.push("karriere übersprungen (Zeit)");
     }
 
-    // ── 3. E-Mail-Anreicherung ── günstig und schnell, läuft zuletzt
-    if (restMs() > 20_000) {
+    // ── 3. Website-Anreicherung ── Voraussetzung für Phase 4
+    if (restMs() > 40_000) {
+      bericht.websites = await runWebsiteEnrichment({
+        deadlineMs: Math.max(20_000, restMs() - 25_000),
+      });
+      phasen.push("websites");
+    } else {
+      phasen.push("websites übersprungen (Zeit)");
+    }
+
+    // ── 4. E-Mail-Anreicherung ── günstig und schnell, läuft zuletzt
+    if (restMs() > 15_000) {
       bericht.emails = await runEmailEnrichment();
       phasen.push("emails");
     } else {
