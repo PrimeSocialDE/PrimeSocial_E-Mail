@@ -1,0 +1,35 @@
+{
+  "_hinweis": "Discovery-Ziele: Orte × Gewerke für die Arbeitsagentur-Suche. 'gewerke' sind zugleich die Suchbegriffe (Feld 'was') — daher echte Jobtitel verwenden, keine Branchennamen. Jede Kombination ist EINE API-Abfrage: 6 Orte × 5 Gewerke = 30 Abfragen je Lauf, gedeckelt durch STELLENSIGNALE_MAX_QUERIES. Der Umkreis je Ort steckt in STELLENSIGNALE_BA_UMKREIS (Standard 35 km), die Orte überlappen sich also bewusst. Weitere Zentren stehen in stellensignale-regionen.json — von dort übernehmen, wenn ihr die Fläche ausweiten wollt.",
+  "ziele": [
+    {
+      "ort": "Oldenburg",
+      "plz": "26122",
+      "gewerke": ["Elektroniker", "Anlagenmechaniker SHK", "Metallbauer", "Zimmerer", "Industriemechaniker"]
+    },
+    {
+      "ort": "Westerstede",
+      "plz": "26655",
+      "gewerke": ["Elektroniker", "Anlagenmechaniker SHK", "Metallbauer"]
+    },
+    {
+      "ort": "Delmenhorst",
+      "plz": "27749",
+      "gewerke": ["Elektroniker", "Anlagenmechaniker SHK", "Industriemechaniker"]
+    },
+    {
+      "ort": "Cloppenburg",
+      "plz": "49661",
+      "gewerke": ["Elektroniker", "Anlagenmechaniker SHK", "Metallbauer"]
+    },
+    {
+      "ort": "Wilhelmshaven",
+      "plz": "26382",
+      "gewerke": ["Metallbauer", "Industriemechaniker", "Elektroniker"]
+    },
+    {
+      "ort": "Leer",
+      "plz": "26789",
+      "gewerke": ["Elektroniker", "Anlagenmechaniker SHK", "Metallbauer"]
+    }
+  ]
+}

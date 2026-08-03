@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.env.local
+.env
+data/db.json
+.claude/
+.DS_Store
+*.tsbuildinfo
+scripts/.pitch-testrun-state.json

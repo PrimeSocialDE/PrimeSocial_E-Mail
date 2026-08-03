@@ -1,0 +1,21 @@
+{
+  "_hinweis": "Referenzen für die Entwürfe. 'keys' werden als Teilstring gegen Gewerk + Stellentitel gematcht (case-insensitive), der erste Treffer gewinnt — Reihenfolge zählt also. 'label' nennt Claude im Entwurf namentlich als Beleg ('bei X funktioniert das schon'), 'link' ersetzt den Platzhalter [Video-Beispiel hier einfügen]. Ohne Treffer greift default_link und Claude bleibt bei einer allgemeinen Formulierung ohne Namen. WICHTIG: Nur Kunden eintragen, deren Nennung abgesprochen ist — der Name steht so in einer Kaltakquise-Mail. Links in Drive auf 'Jeder mit dem Link (Betrachter)' freigeben.",
+  "referenzen": [
+    {
+      "keys": ["elektro", "elektriker", "elektroniker", "energie- und gebäudetechnik"],
+      "label": "Elektro Mußwessels",
+      "link": "https://drive.google.com/drive/folders/1V2KPD70HmdOqAnM3WpRuXuezF9WSVCtg?usp=share_link"
+    },
+    {
+      "keys": ["busfahrer", "fahrer", "verkehr", "bahn", "öpnv", "kraftfahrer"],
+      "label": "Kreisbahn Aurich",
+      "link": "https://drive.google.com/drive/folders/1V2KPD70HmdOqAnM3WpRuXuezF9WSVCtg?usp=share_link"
+    },
+    {
+      "keys": ["industrie", "metall", "stahl", "schweiß", "stadtwerke", "versorger"],
+      "label": "Stadtwerke Wilhelmshaven",
+      "link": "https://drive.google.com/drive/folders/1V2KPD70HmdOqAnM3WpRuXuezF9WSVCtg?usp=share_link"
+    }
+  ],
+  "default_link": "https://drive.google.com/drive/folders/1V2KPD70HmdOqAnM3WpRuXuezF9WSVCtg?usp=share_link"
+}

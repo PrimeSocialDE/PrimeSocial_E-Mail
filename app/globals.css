@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Subtile Pulse-Animation fuer die Pain-Point-Nummern auf der Pitch-Seite.
+ * Brand-Color (#88dfed) als Glow, 2.4s Cycle, leicht versetzt durch
+ * animationDelay-Inline-Style. */
+@keyframes pitch-number-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(136, 222, 236, 0); }
+  50%      { box-shadow: 0 0 0 7px rgba(136, 222, 236, 0.22); }
+}
+.pitch-number-pulse {
+  animation: pitch-number-pulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pitch-number-pulse { animation: none; }
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-dark-950 text-gray-100 font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #333 transparent;
+  }
+
+  *::-webkit-scrollbar { width: 6px; height: 6px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background-color: #333; border-radius: 3px; }
+}
+
+@layer components {
+  /* Card — dunkler Gradient mit feinem Border, wie auf primesocial.de */
+  .card {
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    @apply border border-[#333] rounded-2xl shadow-card;
+    transition: box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .card:hover {
+    @apply shadow-brand;
+  }
+
+  /* Inputs */
+  .input {
+    @apply bg-[#0f0f0f] border border-[#333] rounded-xl px-3 py-2 text-sm text-gray-200
+           placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-brand-300 focus:border-brand-300
+           transition-colors w-full appearance-none;
+  }
+
+  select.input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+  }
+
+  /* Primary Button — Cyan wie auf primesocial.de */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2 bg-brand-300 text-[#000] font-semibold
+           text-sm rounded-full hover:brightness-110 transition-all duration-300
+           disabled:opacity-40 disabled:cursor-not-allowed;
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(136, 222, 236, 0.3);
+  }
+
+  /* Secondary Button — transparentes Outline */
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2 bg-transparent text-brand-300 font-medium
+           text-sm rounded-full border border-brand-300 hover:bg-brand-300/10 transition-all duration-300
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* Ghost Button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-2 text-gray-400 text-sm rounded-xl
+           hover:bg-white/5 hover:text-gray-200 transition-colors;
+  }
+
+  /* Badge */
+  .badge-brand {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+           bg-brand-300/20 text-brand-300 border border-brand-300/30;
+  }
+}

@@ -1,0 +1,276 @@
+{
+  "_comment": "Branchen-Seed für die Google-Maps-Discovery, gruppiert & sortiert. Kuratierte, SM-relevante lokale B2C/Dienstleister + moderne Nischen (aus WZ2008 + Praxis-Branchen, mit umgangssprachlichen Suchbegriffen). BEWUSST ohne Industrie-/Agrar-/Behörden-/Großhandels-Klassen (kein Maps-Sinn, Kostenfalle). Code flacht groups → categories ab (lib/research/seed.ts).",
+  "groups": [
+    {
+      "name": "Gesundheit & Praxen",
+      "categories": [
+        "Zahnarzt",
+        "Kieferorthopäde",
+        "Zahntechnik Dentallabor",
+        "Hausarztpraxis",
+        "Facharztpraxis",
+        "Hautarzt",
+        "Augenarzt",
+        "Orthopäde",
+        "Frauenarzt",
+        "HNO-Arzt",
+        "Kinderarzt",
+        "Psychotherapie",
+        "Heilpraktiker",
+        "Physiotherapie",
+        "Osteopathie",
+        "Ergotherapie",
+        "Logopädie",
+        "Podologie Fußpflege",
+        "Hebamme",
+        "Ernährungsberatung",
+        "Tierarzt",
+        "Tierklinik",
+        "Apotheke",
+        "Optiker",
+        "Hörgeräteakustiker",
+        "Sanitätshaus",
+        "Medizinkosmetik Aesthetic"
+      ]
+    },
+    {
+      "name": "Beauty & Wellness",
+      "categories": [
+        "Kosmetikstudio",
+        "Friseur",
+        "Barbershop",
+        "Nagelstudio",
+        "Wimpernstudio",
+        "Permanent Make-up",
+        "Sonnenstudio",
+        "Massagepraxis",
+        "Wellness Spa",
+        "Sauna",
+        "Tattoo Studio",
+        "Piercingstudio"
+      ]
+    },
+    {
+      "name": "Fitness & Sport",
+      "categories": [
+        "Fitnessstudio",
+        "Crossfit Box",
+        "Yogastudio",
+        "Pilatesstudio",
+        "Personal Trainer",
+        "Tanzschule",
+        "Kampfsportschule",
+        "Reitstall Reiterhof",
+        "Schwimmschule",
+        "Kletterhalle Boulderhalle"
+      ]
+    },
+    {
+      "name": "Freizeit & Erlebnis",
+      "categories": [
+        "Escape Room",
+        "Indoor-Spielplatz",
+        "Trampolinpark",
+        "Lasertag Paintball",
+        "Minigolf",
+        "Kartbahn"
+      ]
+    },
+    {
+      "name": "Handwerk & Bau",
+      "categories": [
+        "Dachdecker",
+        "Zimmerei",
+        "Maler und Lackierer",
+        "Garten- und Landschaftsbau",
+        "Tischlerei",
+        "Schreinerei",
+        "Sanitär Heizung",
+        "Elektriker",
+        "Photovoltaik Solar",
+        "Wärmepumpe Installateur",
+        "Smart-Home Installateur",
+        "Ladeinfrastruktur Elektromobilität",
+        "Klimatechnik",
+        "Bodenleger",
+        "Fliesenleger",
+        "Estrichleger",
+        "Trockenbau",
+        "Stuckateur",
+        "Bauunternehmen",
+        "Innenausbau",
+        "Fensterbau",
+        "Rolladen Markisen",
+        "Metallbau Schlosserei",
+        "Glaserei",
+        "Raumausstatter",
+        "Gerüstbau",
+        "Pflasterbau",
+        "Steinmetz",
+        "Abbruch Abriss",
+        "Erdbau Baggerarbeiten",
+        "Brunnenbau",
+        "Schornsteinfeger"
+      ]
+    },
+    {
+      "name": "Immobilien, Recht & Finanzen",
+      "categories": [
+        "Immobilienmakler",
+        "Hausverwaltung",
+        "Architekturbüro",
+        "Innenarchitekt",
+        "Home-Staging",
+        "Ingenieurbüro",
+        "Vermessungsbüro",
+        "Sachverständiger Gutachter",
+        "Steuerberater",
+        "Rechtsanwalt",
+        "Notar",
+        "Versicherungsmakler",
+        "Finanzberatung",
+        "Energieberatung",
+        "Datenschutzbeauftragter"
+      ]
+    },
+    {
+      "name": "Auto & Mobilität",
+      "categories": [
+        "Autohaus",
+        "Reifenhandel",
+        "Autovermietung",
+        "Motorradhändler",
+        "Wohnmobilhändler",
+        "Fahrzeugfolierung Car-Wrapping",
+        "Fahrschule"
+      ]
+    },
+    {
+      "name": "Dienstleistungen",
+      "categories": [
+        "Umzugsunternehmen",
+        "Entrümpelung Haushaltsauflösung",
+        "Gebäudereinigung",
+        "Glasreinigung",
+        "Schädlingsbekämpfung",
+        "Winterdienst",
+        "Hausmeisterservice Facility",
+        "Sicherheitsdienst",
+        "Personalvermittlung Zeitarbeit",
+        "Druckerei",
+        "Werbetechnik Folierung Beschriftung",
+        "Lasergravur Schilderhersteller",
+        "3D-Druck Dienstleister",
+        "Textilreinigung",
+        "Übersetzungsbüro",
+        "Bestattungsunternehmen"
+      ]
+    },
+    {
+      "name": "Handel & Einzelhandel",
+      "categories": [
+        "Möbelhaus",
+        "Küchenstudio",
+        "Modeboutique",
+        "Brautmode",
+        "Schuhgeschäft",
+        "Sportgeschäft",
+        "Fahrradladen",
+        "Buchhandlung",
+        "Schreibwarengeschäft",
+        "Gartencenter",
+        "Baumarkt",
+        "Baustoffhandel",
+        "Bodenbelag Teppichhandel",
+        "Juwelier Goldschmied",
+        "Florist Blumengeschäft",
+        "Zoohandlung Tierbedarf",
+        "Getränkemarkt",
+        "Drogerie Parfümerie",
+        "Handyladen",
+        "Computerladen",
+        "Vintage Secondhand",
+        "Refurbished Elektronik",
+        "Spielwarengeschäft"
+      ]
+    },
+    {
+      "name": "Essen & Genuss",
+      "categories": [
+        "Bäckerei",
+        "Konditorei",
+        "Metzgerei",
+        "Hofladen",
+        "Catering Partyservice",
+        "Foodtruck",
+        "Craft-Bier-Brauerei",
+        "Kaffeerösterei"
+      ]
+    },
+    {
+      "name": "Events, Foto & Medien",
+      "categories": [
+        "Fotostudio",
+        "Videograf Filmproduktion",
+        "Drohnenaufnahmen",
+        "Eventtechnik Veranstaltungstechnik",
+        "Hochzeitsplaner",
+        "Eventagentur",
+        "DJ Service"
+      ]
+    },
+    {
+      "name": "Bildung & Betreuung",
+      "categories": [
+        "Musikschule",
+        "Nachhilfe",
+        "Sprachschule",
+        "Kindergarten Kita",
+        "Tagesmutter Kinderbetreuung",
+        "Reitschule"
+      ]
+    },
+    {
+      "name": "Tiere",
+      "categories": [
+        "Hundesalon Hundefriseur",
+        "Hundeschule",
+        "Hundetrainer",
+        "Tierbetreuung Dogwalker",
+        "Tierpension"
+      ]
+    },
+    {
+      "name": "Pflege & Senioren",
+      "categories": [
+        "Pflegedienst",
+        "Tagespflege",
+        "Seniorenheim",
+        "Pflegevermittlung 24-Stunden-Pflege"
+      ]
+    },
+    {
+      "name": "Beherbergung & Reise",
+      "categories": [
+        "Ferienwohnung Vermietung",
+        "Monteurzimmer",
+        "Campingplatz",
+        "Reisebüro"
+      ]
+    },
+    {
+      "name": "Verkehr, Logistik & Versorgung",
+      "categories": [
+        "Busunternehmen",
+        "Reisebusunternehmen",
+        "Spedition Logistik",
+        "Taxiunternehmen",
+        "Kurier- und Paketdienst",
+        "Stadtwerke",
+        "Energieversorger",
+        "Entsorgungsunternehmen",
+        "Recyclinghof Schrotthandel"
+      ]
+    }
+  ]
+}

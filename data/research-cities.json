@@ -1,0 +1,1893 @@
+{
+  "_comment": "Städte-Basis für den Batch-Scraper. Bundesland + Stadt Pflicht; Google-Maps-Suche basiert auf der Stadt. Optionales 'einwohner' priorisiert den Batch-Cron (große Städte zuerst). NDS vollständig (132), NRW vollständig mit Einwohnern (272, Stand 31.12.2023). Single source of truth.",
+  "cities": [
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hannover"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Braunschweig"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Osnabrück"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Oldenburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wolfsburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Göttingen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Salzgitter"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hildesheim"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Delmenhorst"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wilhelmshaven"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Lüneburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Celle"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Garbsen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hameln"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Lingen (Ems)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Langenhagen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Nordhorn"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wolfenbüttel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Goslar"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Emden"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Cuxhaven"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Stade"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Melle"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Neustadt am Rübenberge"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Peine"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Achim"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Alfeld (Leine)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Aurich"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Bentheim"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Fallingbostel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Gandersheim"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Harzburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Iburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Lauterberg im Harz"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Münder am Deister"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Nenndorf"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Pyrmont"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Sachsa"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bad Salzdetfurth"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Barsinghausen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bassum"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bersenbrück"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bleckede"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bockenem"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Bramsche"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Braunlage"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Brake (Unterweser)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Buchholz in der Nordheide"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Burgdorf"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Burgwedel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Buxtehude"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Clausthal-Zellerfeld"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Cloppenburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Damme"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Dannenberg (Elbe)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Dassel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Diepholz"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Dinklage"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Dransfeld"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Duderstadt"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Einbeck"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Elsfleth"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Elze"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Esens"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Friedland"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Friesoythe"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Fürstenau"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Gehrden"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Geestland"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Georgsmarienhütte"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Gifhorn"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Gronau (Leine)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hann. Münden"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hardegsen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Haren (Ems)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hassel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hemmingen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Herzberg am Harz"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hessisch Oldendorf"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hitzacker (Elbe)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Holzminden"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Hoya"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Isernhagen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Königslutter am Elm"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Laatzen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Lehrte"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Löningen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Lohne (Oldenburg)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Lehre"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Leer (Ostfriesland)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Munster"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Nienburg/Weser"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Norden"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Norderney"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Northeim"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Osterholz-Scharmbeck"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Osterode am Harz"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Ottersberg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Papenburg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Pattensen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Quakenbrück"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Rehburg-Loccum"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Rinteln"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Ronnenberg"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Rotenburg (Wümme)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Salzhausen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Sarstedt"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Schöningen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Schortens"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Seelze"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Seesen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Sehnde"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Soltau"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Springe"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Stadthagen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Stadtoldendorf"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Syke"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Twistringen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Uelzen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Uslar"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Varel"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Vechta"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Verden (Aller)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Walsrode"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wennigsen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Westerstede"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wildeshausen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Winsen (Luhe)"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wittingen"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wittmund"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Wunstorf"
+    },
+    {
+      "bundesland": "Niedersachsen",
+      "stadt": "Zeven"
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Aachen",
+      "einwohner": 252136
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ahaus",
+      "einwohner": 40076
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ahlen",
+      "einwohner": 53003
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Alsdorf",
+      "einwohner": 48940
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Altena",
+      "einwohner": 16657
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Arnsberg",
+      "einwohner": 74957
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Attendorn",
+      "einwohner": 23610
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Berleburg",
+      "einwohner": 18292
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Driburg",
+      "einwohner": 18830
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Honnef",
+      "einwohner": 24958
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Laasphe",
+      "einwohner": 13159
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Lippspringe",
+      "einwohner": 17237
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Münstereifel",
+      "einwohner": 18343
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Oeynhausen",
+      "einwohner": 50513
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Salzuflen",
+      "einwohner": 54108
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bad Wünnenberg",
+      "einwohner": 12377
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Baesweiler",
+      "einwohner": 29187
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Balve",
+      "einwohner": 11237
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Barntrup",
+      "einwohner": 8302
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Beckum",
+      "einwohner": 37068
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bedburg",
+      "einwohner": 25196
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bergheim",
+      "einwohner": 61477
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bergisch Gladbach",
+      "einwohner": 111003
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bergkamen",
+      "einwohner": 49120
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bergneustadt",
+      "einwohner": 18567
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Beverungen",
+      "einwohner": 12749
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bielefeld",
+      "einwohner": 337255
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Billerbeck",
+      "einwohner": 11826
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Blomberg",
+      "einwohner": 15562
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bocholt",
+      "einwohner": 72893
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bochum",
+      "einwohner": 363441
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bonn",
+      "einwohner": 336465
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Borgentreich",
+      "einwohner": 8661
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Borgholzhausen",
+      "einwohner": 8891
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Borken",
+      "einwohner": 42840
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bornheim",
+      "einwohner": 48036
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bottrop",
+      "einwohner": 118007
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Brakel",
+      "einwohner": 16145
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Breckerfeld",
+      "einwohner": 8857
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Brilon",
+      "einwohner": 25456
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Brühl",
+      "einwohner": 45398
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Burscheid",
+      "einwohner": 19303
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Bünde",
+      "einwohner": 46615
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Büren",
+      "einwohner": 21352
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Castrop-Rauxel",
+      "einwohner": 73747
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Coesfeld",
+      "einwohner": 38007
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Datteln",
+      "einwohner": 35480
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Delbrück",
+      "einwohner": 31931
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Detmold",
+      "einwohner": 74229
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Dinslaken",
+      "einwohner": 67200
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Dormagen",
+      "einwohner": 64143
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Dorsten",
+      "einwohner": 76103
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Dortmund",
+      "einwohner": 593317
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Drensteinfurt",
+      "einwohner": 16082
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Drolshagen",
+      "einwohner": 11901
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Duisburg",
+      "einwohner": 502211
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Dülmen",
+      "einwohner": 47738
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Düren",
+      "einwohner": 94354
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Düsseldorf",
+      "einwohner": 629047
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Elsdorf",
+      "einwohner": 21255
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Emmerich am Rhein",
+      "einwohner": 31728
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Emsdetten",
+      "einwohner": 35960
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Enger",
+      "einwohner": 20674
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ennepetal",
+      "einwohner": 29534
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ennigerloh",
+      "einwohner": 19701
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Erftstadt",
+      "einwohner": 48406
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Erkelenz",
+      "einwohner": 44979
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Erkrath",
+      "einwohner": 43830
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Erwitte",
+      "einwohner": 16317
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Eschweiler",
+      "einwohner": 57439
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Espelkamp",
+      "einwohner": 25763
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Essen",
+      "einwohner": 584580
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Euskirchen",
+      "einwohner": 59787
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Frechen",
+      "einwohner": 52304
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Freudenberg",
+      "einwohner": 17444
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Fröndenberg/Ruhr",
+      "einwohner": 20531
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Geilenkirchen",
+      "einwohner": 28493
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Geldern",
+      "einwohner": 35015
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gelsenkirchen",
+      "einwohner": 259645
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gescher",
+      "einwohner": 17444
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Geseke",
+      "einwohner": 20931
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gevelsberg",
+      "einwohner": 30034
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gladbeck",
+      "einwohner": 75587
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Goch",
+      "einwohner": 34813
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Greven",
+      "einwohner": 38101
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Grevenbroich",
+      "einwohner": 65535
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gronau (Westf.)",
+      "einwohner": 50279
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gummersbach",
+      "einwohner": 51359
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Gütersloh",
+      "einwohner": 99793
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Haan",
+      "einwohner": 30118
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hagen",
+      "einwohner": 188529
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Halle (Westf.)",
+      "einwohner": 21596
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hallenberg",
+      "einwohner": 4356
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Haltern am See",
+      "einwohner": 38109
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Halver",
+      "einwohner": 16381
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hamm",
+      "einwohner": 179916
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hamminkeln",
+      "einwohner": 26938
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Harsewinkel",
+      "einwohner": 25462
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hattingen",
+      "einwohner": 53007
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Heiligenhaus",
+      "einwohner": 26443
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Heimbach",
+      "einwohner": 4501
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Heinsberg",
+      "einwohner": 43093
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hemer",
+      "einwohner": 35022
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hennef (Sieg)",
+      "einwohner": 48295
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Herdecke",
+      "einwohner": 22941
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Herford",
+      "einwohner": 67409
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Herne",
+      "einwohner": 157049
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Herten",
+      "einwohner": 61126
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Herzogenrath",
+      "einwohner": 48139
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hilchenbach",
+      "einwohner": 14539
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hilden",
+      "einwohner": 55057
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Horn-Bad Meinberg",
+      "einwohner": 17375
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Horstmar",
+      "einwohner": 7301
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hörstel",
+      "einwohner": 20125
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Höxter",
+      "einwohner": 28173
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hückelhoven",
+      "einwohner": 41286
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hückeswagen",
+      "einwohner": 14525
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Hürth",
+      "einwohner": 61847
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ibbenbüren",
+      "einwohner": 51807
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Iserlohn",
+      "einwohner": 91884
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Isselburg",
+      "einwohner": 11204
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Jüchen",
+      "einwohner": 24030
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Jülich",
+      "einwohner": 34618
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kaarst",
+      "einwohner": 43188
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kalkar",
+      "einwohner": 14286
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kamen",
+      "einwohner": 42401
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kamp-Lintfort",
+      "einwohner": 37993
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kempen",
+      "einwohner": 34260
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kerpen",
+      "einwohner": 66521
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kevelaer",
+      "einwohner": 28236
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kierspe",
+      "einwohner": 16576
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kleve",
+      "einwohner": 52887
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Korschenbroich",
+      "einwohner": 34566
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Krefeld",
+      "einwohner": 228695
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Kreuztal",
+      "einwohner": 30925
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Köln",
+      "einwohner": 1084831
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Königswinter",
+      "einwohner": 40700
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lage",
+      "einwohner": 34936
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Langenfeld (Rheinland)",
+      "einwohner": 59886
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Leichlingen (Rheinland)",
+      "einwohner": 27934
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lemgo",
+      "einwohner": 39895
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lengerich",
+      "einwohner": 22643
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lennestadt",
+      "einwohner": 24320
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Leverkusen",
+      "einwohner": 167585
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lichtenau",
+      "einwohner": 10891
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Linnich",
+      "einwohner": 13529
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lippstadt",
+      "einwohner": 68602
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lohmar",
+      "einwohner": 31027
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Löhne",
+      "einwohner": 40806
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lübbecke",
+      "einwohner": 26830
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lüdenscheid",
+      "einwohner": 71474
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lüdinghausen",
+      "einwohner": 25008
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lügde",
+      "einwohner": 9294
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Lünen",
+      "einwohner": 85919
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Marienmünster",
+      "einwohner": 4779
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Marl",
+      "einwohner": 86686
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Marsberg",
+      "einwohner": 19578
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Mechernich",
+      "einwohner": 29153
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Meckenheim",
+      "einwohner": 24823
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Medebach",
+      "einwohner": 7991
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Meerbusch",
+      "einwohner": 57110
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Meinerzhagen",
+      "einwohner": 20063
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Menden (Sauerland)",
+      "einwohner": 52229
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Meschede",
+      "einwohner": 29612
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Mettmann",
+      "einwohner": 39484
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Minden",
+      "einwohner": 83991
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Moers",
+      "einwohner": 101601
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Monheim am Rhein",
+      "einwohner": 43078
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Monschau",
+      "einwohner": 12350
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Mönchengladbach",
+      "einwohner": 261034
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Mülheim an der Ruhr",
+      "einwohner": 172471
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Münster",
+      "einwohner": 317713
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Netphen",
+      "einwohner": 23167
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Nettetal",
+      "einwohner": 42172
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Neuenrade",
+      "einwohner": 11654
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Neukirchen-Vluyn",
+      "einwohner": 27278
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Neuss",
+      "einwohner": 154712
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Nideggen",
+      "einwohner": 10841
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Niederkassel",
+      "einwohner": 38564
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Nieheim",
+      "einwohner": 6066
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Oberhausen",
+      "einwohner": 211422
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ochtrup",
+      "einwohner": 20267
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Oelde",
+      "einwohner": 30075
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Oer-Erkenschwick",
+      "einwohner": 31349
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Oerlinghausen",
+      "einwohner": 17228
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Olfen",
+      "einwohner": 13041
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Olpe",
+      "einwohner": 24672
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Olsberg",
+      "einwohner": 14728
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Overath",
+      "einwohner": 26664
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Paderborn",
+      "einwohner": 156887
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Petershagen",
+      "einwohner": 25362
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Plettenberg",
+      "einwohner": 24503
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Porta Westfalica",
+      "einwohner": 36594
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Preußisch Oldendorf",
+      "einwohner": 12536
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Pulheim",
+      "einwohner": 56222
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Radevormwald",
+      "einwohner": 21598
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rahden",
+      "einwohner": 16150
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Ratingen",
+      "einwohner": 88708
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Recklinghausen",
+      "einwohner": 115396
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rees",
+      "einwohner": 21829
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Remscheid",
+      "einwohner": 116982
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rheda-Wiedenbrück",
+      "einwohner": 48377
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rhede",
+      "einwohner": 19592
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rheinbach",
+      "einwohner": 26899
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rheinberg",
+      "einwohner": 31218
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rheine",
+      "einwohner": 76735
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rietberg",
+      "einwohner": 29997
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rösrath",
+      "einwohner": 28640
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Rüthen",
+      "einwohner": 10316
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Salzkotten",
+      "einwohner": 25269
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Sankt Augustin",
+      "einwohner": 56568
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Sassenberg",
+      "einwohner": 14619
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schieder-Schwalenberg",
+      "einwohner": 8124
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schleiden",
+      "einwohner": 13498
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schloß Holte-Stukenbrock",
+      "einwohner": 26217
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schmallenberg",
+      "einwohner": 24608
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schwelm",
+      "einwohner": 28046
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Schwerte",
+      "einwohner": 46008
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Selm",
+      "einwohner": 26299
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Sendenhorst",
+      "einwohner": 14049
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Siegburg",
+      "einwohner": 42274
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Siegen",
+      "einwohner": 102440
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Soest",
+      "einwohner": 47286
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Solingen",
+      "einwohner": 160806
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Spenge",
+      "einwohner": 14629
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Sprockhövel",
+      "einwohner": 24311
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Stadtlohn",
+      "einwohner": 20907
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Steinfurt",
+      "einwohner": 34527
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Steinheim",
+      "einwohner": 12127
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Stolberg (Rheinland)",
+      "einwohner": 57431
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Straelen",
+      "einwohner": 16447
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Sundern (Sauerland)",
+      "einwohner": 27693
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Tecklenburg",
+      "einwohner": 9086
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Telgte",
+      "einwohner": 20016
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Troisdorf",
+      "einwohner": 75828
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Tönisvorst",
+      "einwohner": 29147
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Unna",
+      "einwohner": 59974
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Velbert",
+      "einwohner": 82469
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Velen",
+      "einwohner": 12748
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Verl",
+      "einwohner": 25669
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Versmold",
+      "einwohner": 21609
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Viersen",
+      "einwohner": 77745
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Vlotho",
+      "einwohner": 18496
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Voerde (Niederrhein)",
+      "einwohner": 35627
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Vreden",
+      "einwohner": 23108
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Waldbröl",
+      "einwohner": 19697
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Waltrop",
+      "einwohner": 29272
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Warburg",
+      "einwohner": 23317
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Warendorf",
+      "einwohner": 37654
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Warstein",
+      "einwohner": 25052
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wassenberg",
+      "einwohner": 19617
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wegberg",
+      "einwohner": 27635
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Werdohl",
+      "einwohner": 17801
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Werl",
+      "einwohner": 29861
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wermelskirchen",
+      "einwohner": 34311
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Werne",
+      "einwohner": 30408
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Werther (Westf.)",
+      "einwohner": 11064
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wesel",
+      "einwohner": 60338
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wesseling",
+      "einwohner": 37786
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wetter (Ruhr)",
+      "einwohner": 26302
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wiehl",
+      "einwohner": 25106
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Willebadessen",
+      "einwohner": 8195
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Willich",
+      "einwohner": 49509
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Winterberg",
+      "einwohner": 13164
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wipperfürth",
+      "einwohner": 21646
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Witten",
+      "einwohner": 92037
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wuppertal",
+      "einwohner": 355116
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Wülfrath",
+      "einwohner": 20687
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Würselen",
+      "einwohner": 39868
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Xanten",
+      "einwohner": 21107
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Zülpich",
+      "einwohner": 21597
+    },
+    {
+      "bundesland": "Nordrhein-Westfalen",
+      "stadt": "Übach-Palenberg",
+      "einwohner": 24054
+    }
+  ]
+}

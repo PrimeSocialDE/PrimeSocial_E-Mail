@@ -1,0 +1,40 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/daily",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/imap-replies",
+      "schedule": "30 6 * * *"
+    },
+    {
+      "path": "/api/cron/manual-scheduled",
+      "schedule": "*/5 * * * *"
+    },
+    {
+      "path": "/api/cron/research-batch",
+      "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/stellensignale",
+      "schedule": "0 3 */3 * *"
+    },
+    {
+      "path": "/api/cron/stellensignale-versand",
+      "schedule": "*/30 6,7,8,9,10,11,12,13,14,15 * * 1-5"
+    },
+    {
+      "path": "/api/cron/stellensignale-osm",
+      "schedule": "0 2 * * 1"
+    },
+    {
+      "path": "/api/cron/stellensignale-entwuerfe",
+      "schedule": "0 5 * * 1-5"
+    },
+    {
+      "path": "/api/cron/stellensignale-antworten",
+      "schedule": "15 * * * 1-5"
+    }
+  ]
+}
