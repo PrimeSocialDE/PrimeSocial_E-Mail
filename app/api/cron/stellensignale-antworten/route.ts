@@ -21,6 +21,7 @@ import { NextResponse } from "next/server";
 import { ImapFlow } from "imapflow";
 import { getZielfirmen, updateZielfirma, addSuppression } from "@/lib/stellensignale/db";
 import { bestimmeArt, adresseAus } from "@/lib/stellensignale/antworten";
+import { protokolliere, letzteGesendeteMail } from "@/lib/stellensignale/resonanz";
 import type { ZielfirmaStatus } from "@/types/stellensignale";
 
 export const runtime = "nodejs";
@@ -61,9 +62,9 @@ export async function GET(req: Request) {
     try {
       // Firmen-Index über die E-Mail-Adresse. Klein genug, um ihn einmal zu laden.
       const firmen = await getZielfirmen();
-      const firmaByMail = new Map<string, { id: string; firma: string; status: string }>();
+      const firmaByMail = new Map<string, { id: string; firma: string; status: string; gewerk: string | null }>();
       for (const f of firmen) {
-        if (f.email) firmaByMail.set(f.email.toLowerCase(), { id: f.id, firma: f.firma, status: f.status });
+        if (f.email) firmaByMail.set(f.email.toLowerCase(), { id: f.id, firma: f.firma, status: f.status, gewerk: f.gewerk ?? null });
       }
 
       const since = new Date(Date.now() - 30 * 86_400_000);
@@ -103,6 +104,12 @@ export async function GET(req: Request) {
 
           if (firma) {
             await updateZielfirma(firma.id, { status: "gesperrt" as ZielfirmaStatus });
+            const bezug = await letzteGesendeteMail(firma.id);
+            await protokolliere({
+              zielfirma_id: firma.id, entwurf_id: bezug?.id ?? null,
+              schritt: bezug?.schritt ?? null, art, gewerk: firma.gewerk,
+              betreff, meta: { von },
+            });
             log.push(`${art}: ${firma.firma} (${von}) → gesperrt`);
           } else {
             ergebnis.ohneZuordnung++;
@@ -120,6 +127,19 @@ export async function GET(req: Request) {
           if (firma.status === "aktiv") {
             await updateZielfirma(firma.id, { status: "cooldown" as ZielfirmaStatus });
           }
+
+          // Den WORTLAUT festhalten, nicht nur die Tatsache. Gleich darunter
+          // wird die Mail im Postfach als gelesen markiert und geht damit in
+          // der Ablage unter; ohne diese Zeile bliebe von der Antwort nichts
+          // als ein Statuswechsel. Sie ist ausserdem die Grundlage der
+          // Nischen-Auswertung.
+          const bezug = await letzteGesendeteMail(firma.id);
+          await protokolliere({
+            zielfirma_id: firma.id, entwurf_id: bezug?.id ?? null,
+            schritt: bezug?.schritt ?? null, art: "antwort",
+            gewerk: firma.gewerk, betreff, text: rumpf, meta: { von },
+          });
+
           log.push(`Antwort von ${firma.firma} (${von}) → cooldown, bitte ansehen`);
           verarbeitet.push(msg.uid);
         } else {

@@ -19,6 +19,7 @@ import {
   terminiereNaechstenSchritt,
 } from "@/lib/stellensignale/db";
 import { sendSesMail, isSesConfigured } from "@/lib/ses";
+import { protokolliere } from "@/lib/stellensignale/resonanz";
 
 export interface VersandResult {
   gesendet: number;
@@ -165,6 +166,15 @@ export async function sendeFreigegebene(opts?: { jetzt?: Date; ignoriereFenster?
       gesendet++;
       indiesemLauf.add(email);
       proSchritt[e.schritt] = (proSchritt[e.schritt] ?? 0) + 1;
+
+      // Bezugsgroesse fuer jede spaetere Quote. Ohne diese Zeile laesst sich
+      // eine Antwort keiner Menge gegenueberstellen — "3 Antworten" ist
+      // wertlos, "3 von 40 im Metallbau" ist eine Aussage.
+      await protokolliere({
+        zielfirma_id: e.zielfirma_id, entwurf_id: e.id, schritt: e.schritt,
+        art: "gesendet", gewerk: e.gewerk, betreff: e.betreff,
+        meta: { ses_message_id: messageId },
+      });
 
       // Erst jetzt den Folgeschritt terminieren — ab dem TATSAECHLICHEN Versand.
       // Schlaegt das fehl, ist die Mail trotzdem raus: nur protokollieren, nicht

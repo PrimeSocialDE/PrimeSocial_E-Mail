@@ -47,6 +47,7 @@ const STELLENSIGNALE_LINKS = [
   { href: "/stellensignale",              label: "Signale",       icon: ICONS.signal },
   { href: "/stellensignale/entwuerfe",    label: "Entwürfe",      icon: ICONS.newsletter },
   { href: "/stellensignale/versand",      label: "Versand",       icon: ICONS.queue },
+  { href: "/stellensignale/resonanz",     label: "Resonanz",      icon: ICONS.analytics },
   { href: "/stellensignale/firmen",       label: "Zielfirmen",    icon: ICONS.contacts },
   { href: "/stellensignale/einstellungen", label: "Einstellungen", icon: ICONS.settings },
 ];

@@ -15,6 +15,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createVerify } from "crypto";
 import { addSuppression, getEntwurfByMessageId, updateEntwurfStatus } from "@/lib/stellensignale/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { protokolliere, gewerkAusVersand, type EreignisArt } from "@/lib/stellensignale/resonanz";
 
 export const runtime = "nodejs";
 export const maxDuration = 10;
@@ -116,6 +117,12 @@ interface SesEvent {
     complainedRecipients?: { emailAddress?: string }[];
     complaintFeedbackType?: string;
   };
+  delivery?: { recipients?: string[]; smtpResponse?: string };
+  // Kommen nur an, wenn im Configuration Set Open-/Click-Tracking eingeschaltet
+  // IST UND die Mail einen HTML-Teil hat. Bei reinen Textmails — wie hier —
+  // bleiben beide dauerhaft aus. Siehe lib/stellensignale/resonanz.ts.
+  open?: { userAgent?: string };
+  click?: { link?: string };
 }
 
 export async function POST(req: NextRequest) {
@@ -173,8 +180,51 @@ export async function POST(req: NextRequest) {
   const messageId = event.mail?.messageId;
   const verarbeitet: string[] = [];
 
+  const BEKANNT = ["Bounce", "Complaint", "Delivery", "Open", "Click"];
+  if (!typ || !BEKANNT.includes(typ)) {
+    return NextResponse.json({ ok: true, ignored: typ ?? "unbekannt" });
+  }
+
+  // Zuordnung einmal vorab statt je Zweig: sie wird sowohl fuers Protokoll als
+  // auch fuers Markieren des Entwurfs gebraucht. Schlaegt sie fehl, laeuft die
+  // Sperrung trotzdem — die ist das Wichtigere.
+  let entwurf: { id: string; zielfirma_id: string; schritt: number } | null = null;
+  let gewerk: string | null = null;
+  if (messageId) {
+    try {
+      const e = await getEntwurfByMessageId(messageId);
+      if (e) {
+        entwurf = { id: e.id, zielfirma_id: e.zielfirma_id, schritt: e.schritt };
+        gewerk = await gewerkAusVersand(e.id);
+      }
+    } catch (e) {
+      console.warn("[ses-webhook] Entwurf nicht gefunden:", e);
+    }
+  }
+
+  /** Ereignis mitschreiben, sofern es sich einer Firma zuordnen laesst. */
+  const merke = async (art: EreignisArt, meta?: Record<string, unknown>) => {
+    if (!entwurf) return;
+    await protokolliere({
+      zielfirma_id: entwurf.zielfirma_id, entwurf_id: entwurf.id,
+      schritt: entwurf.schritt, art, gewerk, meta,
+    });
+  };
+
   try {
-    if (typ === "Bounce") {
+    if (typ === "Delivery") {
+      // Der Zielserver hat die Mail angenommen. Das ist die belastbarste Zahl,
+      // die es bei reinen Textmails gibt — sie ersetzt die Oeffnungsrate nicht,
+      // grenzt aber ein, wie viele Mails ueberhaupt ankamen.
+      await merke("zugestellt", { smtp: event.delivery?.smtpResponse?.slice(0, 200) });
+      verarbeitet.push(`zugestellt:${event.delivery?.recipients?.[0] ?? ""}`);
+    } else if (typ === "Open") {
+      await merke("geoeffnet", { userAgent: event.open?.userAgent?.slice(0, 200) });
+      verarbeitet.push("geoeffnet");
+    } else if (typ === "Click") {
+      await merke("geklickt", { link: event.click?.link?.slice(0, 300) });
+      verarbeitet.push("geklickt");
+    } else if (typ === "Bounce") {
       // Nur PERMANENTE Bounces sperren. Ein transienter Bounce (Postfach voll,
       // Server kurz weg) darf keine Adresse dauerhaft verbrennen.
       const permanent = event.bounce?.bounceType === "Permanent";
@@ -192,6 +242,7 @@ export async function POST(req: NextRequest) {
           verarbeitet.push(`soft_bounce_ignoriert:${r.emailAddress}`);
         }
       }
+      if (permanent) await merke("bounce", { subType: event.bounce?.bounceSubType });
     } else if (typ === "Complaint") {
       // Beschwerden IMMER sperren, unabhängig vom Feedback-Typ. Die
       // Complaint-Rate ist die Kennzahl, an der SES Accounts dichtmacht.
@@ -205,16 +256,20 @@ export async function POST(req: NextRequest) {
         });
         verarbeitet.push(`complaint:${r.emailAddress}`);
       }
-    } else {
-      return NextResponse.json({ ok: true, ignored: typ ?? "unbekannt" });
+      await merke("complaint", { feedback: event.complaint?.complaintFeedbackType });
     }
 
-    // Entwurf am Fehlerfeld markieren, damit im Dashboard sichtbar ist warum
-    // nichts ankam. Fehlschlag hier darf die Suppression nicht rückgängig machen.
-    if (messageId) {
+    // Entwurf markieren, damit im Dashboard sichtbar ist, warum nichts ankam —
+    // aber nur, wenn tatsächlich etwas schiefging. Bisher lief das für JEDEN
+    // Bounce, auch einen vorübergehenden (volles Postfach): dann stand im
+    // Dashboard "verworfen", obwohl die Adresse in Ordnung ist und nicht
+    // gesperrt wurde. Zustellungen und Öffnungen dürfen hier ohnehin nicht
+    // hineinlaufen.
+    const gescheitert =
+      (typ === "Bounce" && event.bounce?.bounceType === "Permanent") || typ === "Complaint";
+    if (gescheitert && entwurf) {
       try {
-        const entwurf = await getEntwurfByMessageId(messageId);
-        if (entwurf) await updateEntwurfStatus(entwurf.id, "verworfen");
+        await updateEntwurfStatus(entwurf.id, "verworfen");
       } catch (e) {
         console.warn("[ses-webhook] Entwurf-Update fehlgeschlagen:", e);
       }
