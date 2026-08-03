@@ -84,6 +84,21 @@ export async function sendeFreigegebene(opts?: { jetzt?: Date; ignoriereFenster?
   if (!isSesConfigured()) {
     return leer("SES nicht konfiguriert (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY / SES_FROM_EMAIL)");
   }
+  // RIEGEL: ohne Configuration Set kein Versand.
+  //
+  // SES sendet auch ohne Configuration Set klaglos weiter — meldet dann aber
+  // KEINE Bounces und KEINE Beschwerden zurueck. Der Versand sieht normal aus,
+  // die Suppression-Liste bleibt leer, tote Adressen werden erneut angeschrieben
+  // und die Bounce-Quote steigt unbemerkt, bis AWS das Konto sperrt.
+  //
+  // Das ist der gefaehrlichste Zustand des ganzen Moduls: alles wirkt in
+  // Ordnung, waehrend die Domain verbrennt. Deshalb lieber gar nicht senden.
+  if (!process.env.SES_CONFIGURATION_SET) {
+    return leer(
+      "SES_CONFIGURATION_SET fehlt — ohne Configuration Set meldet SES weder " +
+      "Bounces noch Beschwerden zurueck. Versand aus Sicherheitsgruenden gestoppt.",
+    );
+  }
   if (!opts?.ignoriereFenster) {
     const fenster = imSendefenster(jetzt);
     if (!fenster.ok) return leer(`Sendefenster geschlossen: ${fenster.grund}`);

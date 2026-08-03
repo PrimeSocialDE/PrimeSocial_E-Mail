@@ -15,7 +15,7 @@ if (!process.env.STELLENSIGNALE_MAX_MAILS_PRO_TAG) {
   process.env.STELLENSIGNALE_MAX_MAILS_PRO_TAG = "30";
 }
 
-import { tagesbudget, imSendefenster } from "../lib/stellensignale/versand";
+import { tagesbudget, imSendefenster, sendeFreigegebene } from "../lib/stellensignale/versand";
 
 const start = process.env.SES_WARMUP_START;
 const max = process.env.STELLENSIGNALE_MAX_MAILS_PRO_TAG;
@@ -59,4 +59,32 @@ for (const [label, iso] of faelle) {
 
 const jetzt = imSendefenster();
 console.log(`\n   Jetzt gerade: ${jetzt.ok ? "✅ Fenster offen" : `⛔ ${jetzt.grund}`}`);
-console.log("");
+
+// ── Riegel prüfen ────────────────────────────────────────────────
+// sendeFreigegebene() bricht bei fehlender Konfiguration ab, BEVOR es die
+// Datenbank oder SES anfasst. Deshalb ist das hier gefahrlos aufrufbar.
+async function riegel() {
+  console.log("\n🔒 Sicherheitsriegel\n");
+  const sichern = { ...process.env };
+  const pruefe = async (label: string, aenderung: () => void) => {
+    Object.assign(process.env, sichern);
+    aenderung();
+    const r = await sendeFreigegebene({ ignoriereFenster: true });
+    const blockiert = r.gesendet === 0 && !!r.hinweis;
+    console.log(`   ${blockiert ? "✅" : "❌"} ${label}`);
+    console.log(`      → ${r.hinweis ?? "NICHT blockiert — das wäre ein Fehler"}`);
+  };
+
+  await pruefe("Kill-Switch aus", () => { delete process.env.STELLENSIGNALE_VERSAND_ENABLED; });
+  await pruefe("Configuration Set fehlt", () => {
+    process.env.STELLENSIGNALE_VERSAND_ENABLED = "true";
+    delete process.env.SES_CONFIGURATION_SET;
+  });
+  await pruefe("AWS-Zugang fehlt", () => {
+    process.env.STELLENSIGNALE_VERSAND_ENABLED = "true";
+    delete process.env.AWS_ACCESS_KEY_ID;
+  });
+  Object.assign(process.env, sichern);
+  console.log("");
+}
+riegel();

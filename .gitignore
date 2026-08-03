@@ -7,3 +7,5 @@ data/db.json
 .DS_Store
 *.tsbuildinfo
 scripts/.pitch-testrun-state.json
+.vercel
+.env*

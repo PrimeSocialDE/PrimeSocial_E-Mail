@@ -85,6 +85,15 @@ export default async function VersandDashboard() {
         </div>
       )}
 
+      {versandAn && !process.env.SES_CONFIGURATION_SET && (
+        <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-300">
+          <span className="font-medium">Versand blockiert:</span>{" "}
+          <span className="font-mono text-xs">SES_CONFIGURATION_SET</span> fehlt. Ohne Configuration Set
+          meldet SES weder Bounces noch Beschwerden zurück — die Sperrliste bliebe leer und die
+          Zustellrate würde unbemerkt einbrechen. Der Versand hält deshalb von selbst an.
+        </div>
+      )}
+
       {!versandAn && (
         <div className="mb-6 rounded-xl border border-white/10 bg-dark-950 px-4 py-3 text-sm text-gray-400">
           <span className="text-gray-300 font-medium">Versand ist aus.</span>{" "}
@@ -226,6 +235,11 @@ export default async function VersandDashboard() {
         <Schalter name="STELLENSIGNALE_ARBEITSAGENTUR" an={an(process.env.STELLENSIGNALE_ARBEITSAGENTUR)} bedeutung="Stellensignale aus der Jobbörse" />
         <Schalter name="STELLENSIGNALE_ENTWUERFE_ENABLED" an={an(process.env.STELLENSIGNALE_ENTWUERFE_ENABLED)} bedeutung="Claude schreibt Entwürfe — hier entstehen Token-Kosten" />
         <Schalter name="STELLENSIGNALE_VERSAND_ENABLED" an={versandAn} bedeutung="Versand über SES" />
+        <Schalter
+          name="SES_CONFIGURATION_SET"
+          an={!!process.env.SES_CONFIGURATION_SET}
+          bedeutung="Pflicht für den Versand — nur damit meldet SES Bounces und Beschwerden zurück"
+        />
       </div>
     </div>
   );
