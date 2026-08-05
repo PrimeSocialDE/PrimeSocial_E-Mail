@@ -1,5 +1,5 @@
 import { getEntwuerfe, getHeuteGesendet, getSuppressionListe, getSequenzen, getHeuteFaellig } from "@/lib/stellensignale/db";
-import { tagesbudget, imSendefenster } from "@/lib/stellensignale/versand";
+import { tagesbudget, imSendefenster, versandRiegel, sendefenster } from "@/lib/stellensignale/versand";
 import type { StellenEntwurfMitFirma } from "@/types/stellensignale";
 import type { SuppressionEintrag, SequenzZeile } from "@/lib/stellensignale/db";
 
@@ -56,6 +56,7 @@ export default async function VersandDashboard() {
 
   const { budget, stufe } = tagesbudget();
   const fenster = imSendefenster();
+  const { von: fensterVon, bis: fensterBis } = sendefenster();
 
   const nachStatus = (s: string) => entwuerfe.filter((e) => e.status === s).length;
   const offen = nachStatus("entwurf");
@@ -68,6 +69,7 @@ export default async function VersandDashboard() {
 
   const an = (v?: string) => v === "true";
   const versandAn = an(process.env.STELLENSIGNALE_VERSAND_ENABLED);
+  const riegel = versandRiegel();
 
   return (
     <div>
@@ -84,6 +86,30 @@ export default async function VersandDashboard() {
           Migration ausstehend? ({ladeFehler})
         </div>
       )}
+
+      {/* Die eine Zeile, die vorher fehlte: WARUM geht gerade nichts raus.
+          Dieselbe Prüfung, die der Cron durchläuft — nicht nachgebaut, sondern
+          dieselbe Funktion, damit beide nie auseinanderlaufen können. */}
+      <div className={`mb-6 rounded-xl border px-4 py-3 ${
+        riegel.ok
+          ? "border-emerald-500/20 bg-emerald-500/5"
+          : "border-amber-500/25 bg-amber-500/5"
+      }`}>
+        <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">Versandbereitschaft</div>
+        {riegel.ok ? (
+          <div className="text-sm text-emerald-300">
+            Alle Riegel offen. {freigegeben > 0
+              ? `${freigegeben} freigegebene Mail(e), davon heute noch ${rest} im Budget.`
+              : "Es ist aber nichts freigegeben — der Cron hat nichts zu senden."}
+          </div>
+        ) : (
+          <div className="text-sm text-amber-300">
+            <span className="font-medium">Es geht nichts raus.</span>{" "}
+            {riegel.variable && <span className="font-mono text-xs">{riegel.variable}</span>}{" "}
+            {riegel.grund}
+          </div>
+        )}
+      </div>
 
       {versandAn && !process.env.SES_CONFIGURATION_SET && (
         <div className="mb-6 rounded-xl border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-300">
@@ -109,7 +135,7 @@ export default async function VersandDashboard() {
         <Stat
           label="Sendefenster"
           value={fenster.ok ? "offen" : "zu"}
-          sub={fenster.ok ? "Mo–Fr 8–17 Uhr" : fenster.grund}
+          sub={fenster.ok ? `Mo–Fr ${fensterVon}–${fensterBis} Uhr` : fenster.grund}
           accent={fenster.ok ? "gruen" : "gelb"}
         />
         <Stat label="Gesperrte Adressen" value={sperren.length} sub="nie wieder anschreiben" accent={sperren.length > 0 ? "rot" : undefined} />
@@ -240,6 +266,16 @@ export default async function VersandDashboard() {
           an={!!process.env.SES_CONFIGURATION_SET}
           bedeutung="Pflicht für den Versand — nur damit meldet SES Bounces und Beschwerden zurück"
         />
+
+        {/* Der SES-Zugang fehlte hier bisher. Genau daran kann der Versand
+            scheitern, ohne dass es irgendwo ablesbar wäre: der Cron läuft,
+            meldet "kein Versand" in eine Antwort, die niemand liest. */}
+        <Schalter name="AWS_ACCESS_KEY_ID" an={!!process.env.AWS_ACCESS_KEY_ID} bedeutung="SES-Zugang — ohne ihn sendet nichts" />
+        <Schalter name="AWS_SECRET_ACCESS_KEY" an={!!process.env.AWS_SECRET_ACCESS_KEY} bedeutung="SES-Zugang — ohne ihn sendet nichts" />
+        <Schalter name="SES_FROM_EMAIL" an={!!process.env.SES_FROM_EMAIL} bedeutung={process.env.SES_FROM_EMAIL ?? "Absenderadresse der Kaltakquise-Domain"} />
+        <Schalter name="CRON_SECRET" an={!!process.env.CRON_SECRET} bedeutung="schützt die Cron-Endpunkte vor fremdem Aufruf" />
+        <Schalter name="SES_WARMUP_START" an={!!process.env.SES_WARMUP_START} bedeutung={process.env.SES_WARMUP_START ?? "ohne Startdatum gilt vorsichtshalber nur die Startmenge"} />
+        <Schalter name="SES_WARMUP_START_MENGE" an={!!process.env.SES_WARMUP_START_MENGE} bedeutung={`Mails am ersten Warmup-Tag (aktuell ${process.env.SES_WARMUP_START_MENGE ?? "5 — Standard"})`} />
       </div>
     </div>
   );
