@@ -10,6 +10,7 @@
 // Adapter in Phase 1b echte Daten liefern, läuft alles ohne Änderung durch.
 // ─────────────────────────────────────────────────────────────────
 import { getZielfirmen, getBlacklist, createZielfirma, upsertSignal, updateZielfirma } from "@/lib/stellensignale/db";
+import { normalisiereGewerk } from "@/lib/stellensignale/branche";
 import { pruefeAnzeige, domainOf, istAusgeschlossen } from "@/lib/stellensignale/filter";
 import { istFachkraft } from "@/lib/stellensignale/qualify";
 import { discoverKleinanzeigen } from "@/lib/stellensignale/platforms/kleinanzeigen";
@@ -157,7 +158,10 @@ export async function runDiscovery(opts: {
               firma: t.firma,
               website: t.website,
               karriere_url: null,
-              gewerk: t.gewerk ?? gewerk,
+              // Der Suchbegriff der Arbeitsagentur ist ein Stellentitel
+              // ("Metallbauer"), keine Kategorie. Ungefiltert gespeichert
+              // zersplittert er spaeter die Nischen-Auswertung.
+              gewerk: normalisiereGewerk(t.gewerk ?? gewerk),
               ort: t.ort ?? ziel.ort,
               plz: t.plz ?? ziel.plz,
               mitarbeiter_geschaetzt: t.mitarbeiter,

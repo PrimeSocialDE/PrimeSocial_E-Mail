@@ -28,6 +28,7 @@
 // aber NICHT in die Bewertung einer Nische ein — dafuer zaehlen Antworten.
 // ─────────────────────────────────────────────────────────────────
 import { getClient, isSupabaseConfigured } from "@/lib/supabase";
+import { normalisiereGewerk } from "@/lib/stellensignale/branche";
 
 export type EreignisArt =
   | "gesendet" | "zugestellt" | "geoeffnet" | "geklickt"
@@ -103,7 +104,9 @@ export async function protokolliere(e: NeuesEreignis): Promise<boolean> {
       entwurf_id: e.entwurf_id ?? null,
       schritt: e.schritt ?? null,
       art: e.art,
-      gewerk: e.gewerk ?? null,
+      // Normalisiert ablegen: sonst stehen "Metallbauer" und "metall"
+      // als zwei Nischen nebeneinander.
+      gewerk: normalisiereGewerk(e.gewerk),
       betreff: e.betreff?.slice(0, 300) ?? null,
       // Antworten koennen ganze Verlaeufe mitschleppen. 4000 Zeichen reichen,
       // um zu erkennen, worum es geht.
@@ -147,9 +150,12 @@ export async function nischenStatistik(tage?: number): Promise<NischenZeile[]> {
   });
 
   for (const r of (data ?? []) as { art: EreignisArt; gewerk: string | null }[]) {
+    // Auch beim Lesen normalisieren: Ereignisse, die vor dieser Korrektur
+    // geschrieben wurden, tragen noch Stellentitel im Feld.
+    //
     // Firmen ohne Branchen-Zuordnung sind eine eigene Gruppe, keine Fussnote:
     // unter ihnen stecken die Betriebe, deren Name nichts verraet.
-    const key = r.gewerk ?? "ohne Zuordnung";
+    const key = normalisiereGewerk(r.gewerk) ?? "ohne Zuordnung";
     const z = zeilen.get(key) ?? leer(key);
     switch (r.art) {
       case "gesendet":     z.versendet++;    break;

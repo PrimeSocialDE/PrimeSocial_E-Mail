@@ -62,6 +62,33 @@ const NICHT_ZIELGRUPPE =
 const KATEGORIE_RAUS =
   /(shop|bakery|butcher|hairdresser|photographer|artist|tailor|shoemaker|jeweller|optician|florist|confectionery|brewery.*shop|restaurant|cafe|bar)/i;
 
+/** Die sechs Kategorien, in denen ausgewertet wird. Alles andere ist Rohtext. */
+export const GEWERKE = ["elektro", "shk", "metall", "bau", "galabau", "industrie"] as const;
+
+/**
+ * Freitext auf eine der sechs Kategorien bringen.
+ *
+ * Nötig, weil an zwei Stellen Stellentitel statt Kategorien in `gewerk`
+ * landen: die Arbeitsagentur-Suche nutzt Begriffe wie "Anlagenmechaniker SHK"
+ * oder "Metallbauer", und discover.ts schreibt den Suchbegriff direkt weiter.
+ * In der Nischen-Auswertung stünden dann "Metallbauer" und "metall" als zwei
+ * getrennte Zeilen — und genau die Frage, welche Nische am besten reagiert,
+ * ließe sich nicht mehr beantworten.
+ *
+ * Gibt null zurück, wenn sich nichts ableiten lässt. Dann ist "ohne Zuordnung"
+ * die ehrliche Antwort, nicht eine geratene Kategorie.
+ */
+export function normalisiereGewerk(wert: string | null | undefined): string | null {
+  if (!wert) return null;
+  const w = wert.trim().toLowerCase();
+  if (!w) return null;
+  if ((GEWERKE as readonly string[]).includes(w)) return w;
+  for (const n of NAME_GEWERK) {
+    if (n.muster.test(wert)) return n.gewerk;
+  }
+  return null;
+}
+
 /**
  * Einordnung eines Betriebs. Beurteilt wird aus Kategorie UND Name — die
  * Kategorie ist präziser, fehlt aber oft.
