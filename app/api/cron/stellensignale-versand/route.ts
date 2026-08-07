@@ -10,6 +10,7 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { sendeFreigegebene } from "@/lib/stellensignale/versand";
+import { fuelleFreigabe } from "@/lib/stellensignale/autofreigabe";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -22,11 +23,27 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // Vor dem Versand die Warteschlange auffuellen. Bewusst hier und nicht in
+    // einem eigenen Cron: so kann der Vorrat gar nicht erst leerlaufen,
+    // waehrend der Versand danebensteht und nichts zu tun hat. Ist der
+    // Schalter aus, kehrt das sofort und folgenlos zurueck.
+    let freigabe: Awaited<ReturnType<typeof fuelleFreigabe>> | null = null;
+    try {
+      freigabe = await fuelleFreigabe();
+      if (freigabe.freigegeben > 0) {
+        console.log(`[versand-cron] ${freigabe.freigegeben} Entwuerfe automatisch freigegeben`);
+      }
+    } catch (e) {
+      // Eine gescheiterte Freigabe darf den Versand dessen nicht aufhalten,
+      // was bereits freigegeben ist.
+      console.warn("[versand-cron] Autofreigabe fehlgeschlagen:", e);
+    }
+
     const result = await sendeFreigegebene();
     if (result.fehler.length > 0) {
       console.warn(`[versand-cron] ${result.fehler.length} Fehler:`, result.fehler.slice(0, 5));
     }
-    return NextResponse.json({ ok: true, ...result });
+    return NextResponse.json({ ok: true, ...result, freigabe });
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     console.error("[versand-cron] Abbruch:", msg);
